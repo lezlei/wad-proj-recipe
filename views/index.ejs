@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Digital Recipe Box</title>
+</head>
+<body>
+    <h1>IS113 Digital Recipe Box</h1>
+
+    <% if (!userId) { %>
+        <h2>Welcome, User!</h2>
+        <p>Please <a href="/auth/login">Login</a> or <a href="/auth/register">Register</a> to start managing your recipes.</p>
+    <% } else { %>
+        <h2>Welcome back!</h2>
+        <p>Your user ID is: <strong><%= userId %></strong></p>
+        
+        <nav>
+            <ul>
+                <li><a href="/auth/profile">View My Profile (Update/Delete)</a></li>
+                <li><a href="/recipes">Browse Recipes</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
+            </ul>
+        </nav>
+    <% } %>
+
+    <hr>
+</body>
+</html>

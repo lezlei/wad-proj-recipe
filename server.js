@@ -17,8 +17,8 @@ app.use(session({
 // MongoDB CONNECTION
 const dbURI = "mongodb+srv://db_user:wadrecipe@wad-recipe-proj.xa42ecg.mongodb.net/WAD-recipe-proj?appName=WAD-recipe-proj";
 mongoose.connect(dbURI)
-  .then(() => console.log("✅ MongoDB Connected to Atlas"))
-  .catch(err => console.log("❌ DB Connection Error:", err));
+  .then(() => console.log("MongoDB Connected to Atlas"))
+  .catch(err => console.log("DB Connection Error:", err));
 
 // ROUTES
 const authRoutes = require('./routes/auth');
@@ -31,5 +31,5 @@ app.get("/", (req, res) => {
 
 // START SERVER
 app.listen(8000, () => {
-    console.log("🚀 Server running on port 8000");
+    console.log("Server running at http://localhost:8000");
 });
