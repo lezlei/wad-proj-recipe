@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/lezlei/wad-proj-recipe#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "ejs": "^5.0.1",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
