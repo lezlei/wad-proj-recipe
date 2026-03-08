@@ -1,71 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
-const bcrypt = require('bcrypt'); 
 
-// GET Registration webpage
-router.get('/register', (req, res) => {
-    res.render('auth/register');
-});
+// Import the controller
+const authController = require('../controllers/authController');
 
-// POST Registration
-router.post('/register', (req, res) => {
-    const { username, email, password } = req.body;
+router.get('/register', authController.getRegister);
+router.post('/register', authController.postRegister);
 
-    // Use bcrypt to hash the password before saving
-    bcrypt.hash(password, 10, (err, hashedPassword) => {
-        if (err) {
-            return res.send("Error hashing password.");
-        }
+router.get('/login', authController.getLogin);
+router.post('/login', authController.postLogin);
 
-        const newUser = new User({
-            username: username,
-            email: email,
-            password: hashedPassword // Save the hashed version
-        });
+router.get('/profile', authController.getProfile);
+router.post('/profile/update', authController.postUpdateProfile);
+router.post('/profile/delete', authController.postDeleteProfile);
 
-        // Save to MongoDB
-        newUser.save((err) => {
-            if (err) {
-                console.log(err);
-                res.send("Registration failed. Check for duplicate username/email.");
-            } else {
-                res.redirect('/auth/login');
-            }
-        });
-    });
-});
-
-// GET Login webpage
-router.get('/login', (req, res) => {
-    res.render('auth/login');
-});
-
-// POST Login
-router.post('/login', (req, res) => {
-    const { username, password } = req.body;
-
-    // Check if user exists
-    User.findOne({ username: username }, (err, user) => {
-        if (err || !user) {
-            return res.send("Invalid username or password.");
-        }
-
-        // Compare inputted password with hashed password
-        bcrypt.compare(password, user.password, (err, isMatch) => {
-            if (err) {
-                return res.send("Error during login.");
-            }
-
-            if (isMatch) {
-                // "Save" their session login
-                req.session.userId = user._id; 
-                res.redirect('/');
-            } else {
-                res.send("Invalid username or password.");
-            }
-        });
-    });
-});
+router.get('/logout', authController.getLogout);
 
 module.exports = router;

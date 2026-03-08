@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><title>My Profile</title></head>
+<body>
+    <h1>User Profile</h1>
+    <p><strong>Username:</strong> <%= user.username %></p>
+    <p><strong>Current Email:</strong> <%= user.email %></p>
+
+    <hr>
+    <h3>Update Email</h3>
+    <form action="/auth/profile/update" method="POST">
+        <input type="email" name="email" placeholder="New Email" required>
+        <button type="submit">Update Email</button>
+    </form>
+
+    <hr>
+    <h3>DELETE ACCOUNT</h3>
+    <form action="/auth/profile/delete" method="POST">
+        <button type="submit" onclick="return confirm('You sure? This deletes your account forever.')">Delete My Account</button>
+    </form>
+
+    <p><a href="/">Back to Home</a></p>
+</body>
+</html>

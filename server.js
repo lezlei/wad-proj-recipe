@@ -26,7 +26,10 @@ app.use('/auth', authRoutes); // User authentication logic
 
 app.get("/", (req, res) => {
     // Pass userId so EJS can see if someone is logged in
-    res.render("index", { userId: req.session.userId });
+    res.render("index", { 
+        userId: req.session.userId, 
+        username: req.session.username
+    });
 });
 
 // START SERVER

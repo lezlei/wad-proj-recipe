@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><title>Register</title></head>
+<body>
+    <h1>Register New Account</h1>
+    <form action="/auth/register" method="POST">
+        <div>
+            <label>Username:</label>
+            <input type="text" name="username" required>
+        </div>
+        <div>
+            <label>Email:</label>
+            <input type="email" name="email" required>
+        </div>
+        <div>
+            <label>Password:</label>
+            <input type="password" name="password" required>
+        </div>
+        <button type="submit">Create Account</button>
+    </form>
+    <p>Already have an account? <a href="/auth/login">Login here</a></p>
+    <p><a href="/">Back to Home</a></p>
+</body>
+</html>
