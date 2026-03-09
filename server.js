@@ -22,17 +22,11 @@ mongoose.connect(dbURI)
 
 // ROUTES
 const authRoutes = require('./routes/auth');
-app.use('/auth', authRoutes); // User authentication logic
-
-app.get("/", (req, res) => {
-    // Pass userId so EJS can see if someone is logged in
-    res.render("index", { 
-        userId: req.session.userId, 
-        username: req.session.username
-    });
-});
+const homeRoutes = require('./routes/home'); 
+app.use('/', homeRoutes);
+app.use('/auth', authRoutes);
 
 // START SERVER
-app.listen(8000, () => {
-    console.log("Server running at http://localhost:8000");
+app.listen(3000, () => {
+    console.log("Server running at http://localhost:3000");
 });
