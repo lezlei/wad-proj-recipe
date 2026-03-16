@@ -1,0 +1,81 @@
+<h1>Recipes</h1>
+<h2>My Recipes</h2>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Ingredients</th>
+      <th>Instructions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (myRecipes.length === 0) { %>
+      <tr>
+        <td colspan="4">You have not created any recipes yet.</td>
+      </tr>
+    <% } else { %>
+      <% myRecipes.forEach(recipe => { %>
+        <tr>
+          <td><%= recipe.title %></a></td>
+          <td><%= recipe.description %></td>
+          <td>
+            <ul>
+              <% recipe.ingredients.forEach(ing => { %>
+                <li><%= ing %></li>
+              <% }) %>
+            </ul>
+          </td>
+          <td><%= recipe.instructions %></td>
+        </tr>
+      <% }) %>
+    <% } %>
+  </tbody>
+</table>
+
+<br>
+
+<a href="/recipes/create">+ Create New Recipe</a>
+<br><br>
+<a href="/">Back to Home</a>
+
+<hr>
+
+<h2>All Recipes</h2>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Ingredients</th>
+      <th>Instructions</th>
+      <th>Author</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (allRecipes.length === 0) { %>
+      <tr>
+        <td colspan="5">No recipes found.</td>
+      </tr>
+    <% } else { %>
+      <% allRecipes.forEach(recipe => { %>
+        <tr>
+          <td><%= recipe.title %></a></td>
+          <td><%= recipe.description %></td>
+          <td>
+            <ul>
+              <% recipe.ingredients.forEach(ing => { %>
+                <li><%= ing %></li>
+              <% }) %>
+            </ul>
+          </td>
+          <td><%= recipe.instructions %></td>
+          <td><%= recipe.authorID ? recipe.authorID.username : 'Unknown' %></td>
+        </tr>
+      <% }) %>
+    <% } %>
+  </tbody>
+</table>
+

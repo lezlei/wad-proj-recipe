@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+// Recipe Schema
 const recipeSchema = new mongoose.Schema({
     title: String,
     description: String,
@@ -11,4 +12,23 @@ const recipeSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model("Recipe", recipeSchema)
+const Recipe = mongoose.model("Recipe", recipeSchema, 'recipes');
+
+// Function to find User's recipes by userid
+exports.findByID = function(id){
+    return Recipe.find({ authorID : id });
+};
+
+// Function to retrieve all recipes from database
+exports.retrieveAll = function(){
+    return Recipe.find().populate('authorID');
+};
+
+// Function to add a recipe into the database
+exports.addRecipe = function(newRecipe){
+    return Recipe.create(newRecipe);
+};
+
+// Function to update/edit a recipe in the database (to be done)
+
+// Function to delete a recipe from database (to be done)

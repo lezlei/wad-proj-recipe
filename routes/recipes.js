@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const Recipe = require("../models/Recipe")
+const recipeController = require('../controllers/recipeController');
 
-router.get("/", async (req, res) => {
-    const recipes = await Recipe.find();
-    res.render("recipes/index", { recipes })
-});
+// Get and display all recipes from specific user and everyone else when 'Browse Recipes' is clicked
+router.get("/recipes", recipeController.displayRecipes);
 
-router.get("/new", (req, res) => {
-    res.render("recipes/new")
-});
+// Get Form to create recipe
+router.get('/recipes/create', recipeController.createGet);
+
+// Post Form after filling in the recipe form
+router.post('/recipes/create', recipeController.createPost);
 
 module.exports = router

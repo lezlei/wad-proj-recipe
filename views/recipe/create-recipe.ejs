@@ -1,0 +1,21 @@
+<h1>Create Recipe</h1>
+
+<form method="POST" action="/recipes/create">
+
+  <label>Title</label><br>
+  <input type="text" name="title" required><br><br>
+
+  <label>Description</label><br>
+  <textarea name="description" required></textarea><br><br>
+
+  <label>Ingredients (one per line)</label><br>
+  <textarea name="ingredients" required></textarea><br><br>
+
+  <label>Instructions</label><br>
+  <textarea name="instructions" required></textarea><br><br>
+
+  <button type="submit">Create Recipe</button>
+
+</form>
+
+<a href="/recipes">Back to Recipes</a>
