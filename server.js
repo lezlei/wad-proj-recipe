@@ -22,8 +22,10 @@ app.use(session({
 // ROUTES
 const authRoutes = require('./routes/auth');
 const homeRoutes = require('./routes/home'); 
+const recipeRoutes = require('./routes/recipes');
 app.use('/auth', authRoutes);
 app.use('/', homeRoutes);
+app.use('/',recipeRoutes);
 
 // Connect to MongoDB function
 async function connectDB() {
