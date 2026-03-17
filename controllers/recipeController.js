@@ -68,3 +68,64 @@ exports.createPost = async (req,res) => {
     };
 };
 
+// Logic for GET update-recipe to see form for user to edit/update recipe
+exports.updateGet = async (req,res)=>{
+    try {
+        const currentUserID = req.session.userId;
+
+        if(!currentUserID) {
+            return res.redirect('/auth/login');
+        }
+
+        const recipeId = req.params.id;
+
+        const existingRecipe = await Recipe.findOneRecipe(recipeId, currentUserID);
+
+        if (!existingRecipe) {
+            console.log("Recipe not found!");
+            return res.redirect('/recipes');
+        }
+
+        res.render("recipe/update-recipe", {recipe: existingRecipe});
+    } catch (error) {
+        console.error(error);
+        res.redirect('/recipes');
+    }
+}
+
+// Logic for POST update-recipe to submit form and redirect user back to browse-recipe
+exports.updatePost = async (req,res)=>{
+    try {
+        const recipeId = req.params.id;
+        const {title, description, ingredients, instructions} = req.body;
+        const currentUserID = req.session.userId;
+
+        if (!currentUserID) {
+            return res.redirect('/auth/login');
+        }
+
+        const ingredientsArray = ingredients.split('\n').filter(line => line.trim() !== '');
+
+        const updatedRecipe = {
+            title : title,
+            description : description,
+            ingredients : ingredientsArray,
+            instructions : instructions,
+            authorID : currentUserID
+        };
+
+        const updateCheck = await Recipe.updateRecipe(recipeId, currentUserID, updatedRecipe);
+
+        if (updateCheck) {
+            console.log(`${title} recipe updated for user ${currentUserID}`);
+            res.redirect("/recipes");
+        } else {
+            console.log(`${title} recipe does not exist!`);
+            res.redirect("/recipes");
+        }
+
+    } catch (error) {
+        console.error(error);
+        res.redirect('/recipes');
+    }
+}

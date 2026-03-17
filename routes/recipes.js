@@ -11,4 +11,8 @@ router.get('/recipes/create', recipeController.createGet);
 // Post Form after filling in the recipe form
 router.post('/recipes/create', recipeController.createPost);
 
+router.get('/recipes/:id/edit',recipeController.updateGet)
+
+router.post('/recipes/:id/update',recipeController.updatePost)
+
 module.exports = router

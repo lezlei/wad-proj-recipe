@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Recipe</title>
+</head>
+<body>
+    <h1>Update Recipe: <%= recipe.title %></h1>
+
+    <form method="POST" action="/recipes/<%= recipe._id %>/update">
+        
+        <label>Title</label><br>
+        <input type="text" name="title" value="<%= recipe.title %>" required><br><br>
+
+        <label>Update Description</label><br>
+        <textarea name="description" required><%= recipe.description %></textarea><br><br>
+
+        <label>Update Ingredients (one per line)</label><br>
+        <textarea name="ingredients" required><%= recipe.ingredients.join('\n') %></textarea><br><br>
+
+        <label>Update Instructions</label><br>
+        <textarea name="instructions" required><%= recipe.instructions %></textarea><br><br>
+
+        <button type="submit">Save Changes</button>
+    </form>
+    
+    <br>
+    <a href="/recipes">Cancel and Go Back</a>
+    
+</body>
+</html>

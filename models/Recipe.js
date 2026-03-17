@@ -29,6 +29,18 @@ exports.addRecipe = function(newRecipe){
     return Recipe.create(newRecipe);
 };
 
-// Function to update/edit a recipe in the database (to be done)
+// Function to find a recipe in the database
+exports.findOneRecipe = function(recipeId, authorId) {
+    return Recipe.findOne({ _id: recipeId, authorID: authorId });
+};
+
+// Function to update/edit a recipe in the database
+exports.updateRecipe = function(recipeId, authorId, updatedData) {
+    return Recipe.findOneAndUpdate(
+        { _id: recipeId, authorID: authorId }, 
+        updatedData,                          
+        {returnDocument: 'after'}                          
+    );
+};
 
 // Function to delete a recipe from database (to be done)

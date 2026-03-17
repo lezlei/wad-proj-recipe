@@ -8,17 +8,18 @@
       <th>Description</th>
       <th>Ingredients</th>
       <th>Instructions</th>
+      <th>Action</th> 
     </tr>
   </thead>
   <tbody>
     <% if (myRecipes.length === 0) { %>
       <tr>
-        <td colspan="4">You have not created any recipes yet.</td>
+        <td colspan="5">You have not created any recipes yet.</td>
       </tr>
     <% } else { %>
       <% myRecipes.forEach(recipe => { %>
         <tr>
-          <td><%= recipe.title %></a></td>
+          <td><%= recipe.title %></td>
           <td><%= recipe.description %></td>
           <td>
             <ul>
@@ -28,6 +29,11 @@
             </ul>
           </td>
           <td><%= recipe.instructions %></td>
+          
+          <td>
+            <a href="/recipes/<%= recipe._id %>/edit">Edit</a>
+          </td>
+          
         </tr>
       <% }) %>
     <% } %>
