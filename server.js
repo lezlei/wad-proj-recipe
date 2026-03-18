@@ -23,6 +23,7 @@ app.use(session({
 const authRoutes = require('./routes/auth');
 const homeRoutes = require('./routes/home'); 
 const recipeRoutes = require('./routes/recipes');
+const reviewRoutes = require('./routes/review')
 app.use('/auth', authRoutes);
 app.use('/', homeRoutes);
 app.use('/',recipeRoutes);

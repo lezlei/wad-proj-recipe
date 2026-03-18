@@ -1,0 +1,32 @@
+<h3>Add Review</h3>
+
+<form action="/reviews" method="POST">
+  <input type="text" name="recipeId" value="<%= recipe._id %>">
+
+  <label>Rating:</label>
+  <input type="number" name="rating" min="1" max="5" required>
+
+  <br>
+
+  <label>Comment:</label>
+  <textarea name="comment" required></textarea>
+
+  <br>
+
+  <button type="submit">Submit Review</button>
+</form>
+
+<h3>Reviews</h3>
+<% if (reviews.length === 0) { %>
+  <p>No reviews yet.</p>
+<% } else { %>
+    <% reviews.forEach(review => { %>
+    <p><%= review.user.username %></p>
+    <p>Rating: <%= review.rating %>/5</p>
+    <p><%= review.comment %></p>
+    <% })  %>
+    <!-- Delete button (optional) -->
+    <form action="/reviews/delete/<%= review._id %>" method="POST">
+      <button type="submit">Delete</button>
+    </form>
+<% }%>
