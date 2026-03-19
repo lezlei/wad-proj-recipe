@@ -50,6 +50,20 @@
 
 <h2>All Recipes</h2>
 
+<form action="/recipes" method="get">
+  <input type="text" name="search" placeholder="Search recipes..." value="<%= search || '' %>">
+
+  <select name="filter">
+    <option value="title" <%= filter === 'title' ? 'selected' : '' %>>By Title</option>
+    <option value="author" <%= filter === 'author' ? 'selected' : '' %>>By Author</option>
+  </select>
+
+  <button type="submit">Search</button>
+  <% if (search) { %>
+    <a href="/recipes">Clear</a>
+  <% } %>
+</form>
+
 <table border="1">
   <thead>
     <tr>

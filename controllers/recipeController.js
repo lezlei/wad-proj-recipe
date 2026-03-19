@@ -1,4 +1,4 @@
-
+const User = require('../models/User');
 const Recipe = require('../models/Recipe');
 
 // Logic for GET browse-recipe to see user's recipes and everyone's recipe
@@ -11,11 +11,23 @@ exports.displayRecipes = async (req,res) => {
             return res.redirect('/auth/login')
         }
 
+        const { search = '', filter = '' } = req.query;
+
         const userRecipes = await Recipe.findByID(currentUserID);
 
-        const allRecipes = await Recipe.retrieveAll();
+        let allRecipes;
 
-        res.render('recipe/browse-recipe', {myRecipes : userRecipes, allRecipes: allRecipes, user: req.session.user});
+        if (!search) {
+            allRecipes = await Recipe.retrieveAll();
+        } else if (filter === 'author') {
+            const matchedUsers = await User.find({ username: { $regex: search, $options: 'i' } });
+            const userIds = matchedUsers.map(u => u._id);
+            allRecipes = await Recipe.searchByAuthor(userIds);
+        } else if (filter === 'title'){
+            allRecipes = await Recipe.searchByTitle(search);
+        }
+        
+        res.render('recipe/browse-recipe', {myRecipes : userRecipes, allRecipes: allRecipes, user: req.session.user, search, filter});
     } catch (error) {
         console.error(error);
     };

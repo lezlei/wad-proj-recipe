@@ -43,4 +43,15 @@ exports.updateRecipe = function(recipeId, authorId, updatedData) {
     );
 };
 
+// Function to filter recipes by same titles when searching
+exports.searchByTitle = function(query){
+    return Recipe.find({ title : { $regex: query, $options: 'i' } }).populate('authorID');
+};
+
+// Function to filter recipes by same author when searching
+exports.searchByAuthor = function(userIds) {
+    return Recipe.find({ authorID: { $in : userIds } }).populate('authorID');
+};
+
 // Function to delete a recipe from database (to be done)
+
