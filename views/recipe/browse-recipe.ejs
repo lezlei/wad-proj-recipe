@@ -79,9 +79,16 @@
           </td>
           <td><%= recipe.instructions %></td>
           <td><%= recipe.authorID ? recipe.authorID.username : 'Unknown' %></td>
+
+          <% if (user && user.role === 'admin') { %>
+            <td>
+              <a href="/recipes/<%= recipe._id %>/edit">Edit</a>
+            </td>
+          <% } %>
         </tr>
       <% }) %>
     <% } %>
+
   </tbody>
 </table>
 

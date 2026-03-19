@@ -5,6 +5,7 @@ const Recipe = require('../models/Recipe');
 exports.displayRecipes = async (req,res) => {
     try { 
         const currentUserID = req.session.userId
+        
 
         if (!currentUserID){
             return res.redirect('/auth/login')
@@ -14,7 +15,7 @@ exports.displayRecipes = async (req,res) => {
 
         const allRecipes = await Recipe.retrieveAll();
 
-        res.render('recipe/browse-recipe', {myRecipes : userRecipes, allRecipes: allRecipes});
+        res.render('recipe/browse-recipe', {myRecipes : userRecipes, allRecipes: allRecipes, user: req.session.user});
     } catch (error) {
         console.error(error);
     };
