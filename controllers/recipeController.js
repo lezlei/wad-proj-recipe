@@ -149,16 +149,22 @@ exports.deletePost = async (req, res) => {
         const recipeId = req.params.id;
         const currentUserID = req.session.userId;
 
-        // Ensure user is logged in
         if (!currentUserID) {
             return res.redirect('/auth/login');
         }
 
-        // Delete the recipe using the model function
-        const deleteCheck = await Recipe.deleteRecipe(recipeId, currentUserID);
+        const currentUser = await User.findById(currentUserID);
+        
+        let deleteCheck;
+
+        if (currentUser && currentUser.role === 'admin') {
+            deleteCheck = await Recipe.findByIdAndDelete(recipeId);
+        } else {
+            deleteCheck = await Recipe.deleteRecipe(recipeId, currentUserID);
+        }
 
         if (deleteCheck) {
-            console.log(`Recipe deleted for user ${currentUserID}`);
+            console.log(`Recipe deleted by user ${currentUserID} (Admin: ${currentUser.role === 'admin'})`);
         } else {
             console.log(`Recipe does not exist or unauthorized!`);
         }
