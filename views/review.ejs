@@ -20,6 +20,10 @@
 
   <button type="submit">Submit Review</button>
 
+  <br><br>
+
+  <a href="/recipes">Cancel and Go Back</a>
+
 </form>
 
 
@@ -31,7 +35,11 @@
       <th>User</th>
       <th>Rating</th>
       <th>Comment</th>
-      <th>Actions</th>
+      <% reviews.forEach(review => { %>
+        <% if (review.user && (review.user._id.toString() === String(userId) || role === "admin")) { %>
+          <th>Actions</th>
+        <% } %>
+      <% }) %>
     </tr>
   </thead>
 
@@ -50,18 +58,21 @@
           <td><%= review.rating %></td>
           <td><%= review.comment %></td>
 
-          <td>
+          
             <% if (review.user && (review.user._id.toString() === String(userId) || role === "admin")) { %>
               <!-- UPDATE -->
-              <a href="/reviews/edit/<%= review._id %>">Update</a>
-
+              <td>
+                <a href="/reviews/edit/<%= review._id %>">Update</a>
+              </td>
               <!-- DELETE -->
-              <form action="/reviews/delete" method="POST" style="display:inline;">
-                <input type="hidden" name="reviewId" value="<%= review._id %>">
-                <button type="submit">Delete</button>
-              </form>
+              <td>
+                <form action="/reviews/delete" method="POST" style="display:inline;">
+                  <input type="hidden" name="reviewId" value="<%= review._id %>">
+                  <button type="submit">Delete</button>
+                </form>
+              </td>
             <% } %>
-          </td>
+          
         </tr>
 
       <% }) %>
