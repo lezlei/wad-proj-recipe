@@ -38,7 +38,7 @@ exports.updateReview = async (req, res) => {
       { rating: rating, comment: comment }
     );
 
-    res.redirect('/reviews?recipeId=' + review.recipe);
+    res.redirect('/reviews?recipeId=' + reviewData.recipe);
 
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -49,11 +49,11 @@ exports.deleteReview = async (req, res) => {
 
     const reviewId = req.body.reviewId;
 
-    const review = await review.findById(reviewId);
+    const reviewData = await review.findById(reviewId);
 
     await review.findByIdAndDelete(reviewId);
 
-    res.redirect('/reviews?recipeId=' + review.recipe);
+    res.redirect('/reviews?recipeId=' + reviewData.recipe);
 
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -76,7 +76,7 @@ exports.getUpdatePage = async (req, res) => {
   try {
     const reviewData = await review.findById(req.params.id);
 
-    res.render("edit-review", { review });
+    res.render("edit-review", { review: reviewData });
 
   } catch (error) {
     res.status(500).json({ error: error.message });
