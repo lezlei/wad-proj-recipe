@@ -113,7 +113,7 @@
           <td><%= recipe.instructions %></td>
           <td><%= recipe.authorID ? recipe.authorID.username : 'Unknown' %></td>
           <td>
-          <a href="../review.ejs <%= recipe._id %>">View Reviews</a>
+          <a href="/reviews?recipeId=<%= recipe._id %>">View Reviews</a>
         </td>
 
           <% if (user && user.role === 'admin') { %>

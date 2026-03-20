@@ -8,7 +8,7 @@ exports.createReview = async (req, res) => {
         let recipeId = req.body.recipeId;
         let rating = req.body.rating;
         let comment = req.body.comment;
-        let userId= req.body.userId;
+        let userId= req.session.userId;
 
         const review = {
           user: userId,
@@ -33,7 +33,7 @@ exports.updateReview = async (req, res) => {
 
     const review = await Review.findById(reviewId);
 
-    await Review.findByIdAndUpdate(
+    await review.findByIdAndUpdate(
       reviewId,
       { rating: rating, comment: comment }
     );
@@ -49,9 +49,9 @@ exports.deleteReview = async (req, res) => {
 
     const reviewId = req.body.reviewId;
 
-    const review = await Review.findById(reviewId);
+    const review = await review.findById(reviewId);
 
-    await Review.findByIdAndDelete(reviewId);
+    await review.findByIdAndDelete(reviewId);
 
     res.redirect('/reviews?recipeId=' + review.recipe);
 
@@ -64,7 +64,7 @@ exports.getReviewsPage = async (req, res) => {
 
     const recipeId = req.query.recipeId || '';
 
-    const reviews = await Review.find({ recipe: recipeId });
+    const reviews = await review.find({ recipe: recipeId });
 
     res.render('review', { reviews, recipeId });
 
