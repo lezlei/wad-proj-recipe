@@ -1,44 +1,70 @@
 <h3>Add Review</h3>
 
-<form action="/reviews/create" method="POST">
+<form action="/reviews" method="POST">
+
   <input type="hidden" name="recipeId" value="<%= recipeId %>">
+
+  <div>
+    <label><strong>Rating (1-5):</strong></label><br>
+    <input type="number" name="rating" min="1" max="5" required style="width:60px;">
+  </div>
+
   <br>
-  Rating:
-  <input type="number" name="rating" min="1" max="5" required>
+
+  <div>
+    <label><strong>Comment:</strong></label><br>
+    <textarea name="comment" rows="4" cols="40" required></textarea>
+  </div>
+
   <br>
-  Comment:<textarea name="comment" required></textarea>
-  <br>
+
   <button type="submit">Submit Review</button>
+
 </form>
 
 
 <h3>Reviews</h3>
 
-<% if (reviews.length === 0) { %>
-  <p>No reviews yet.</p>
-<% } else { %>
+<table border="1">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Rating</th>
+      <th>Comment</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
 
-  <% reviews.forEach(review => { %>
+  <tbody>
 
-      <p><strong><%= review.user ? review.user.username : "User" %></strong></p>
-      <p>Rating: <%= review.rating %></p>
-      <p><%= review.comment %></p>
+    <% if (reviews.length === 0) { %>
+      <tr>
+        <td colspan="4">No reviews yet.</td>
+      </tr>
+    <% } else { %>
 
-      <!-- DELETE -->
-      <form action="/reviews/delete" method="POST">
-        <input type="hidden" name="reviewId" value="<%= review.id %>">
-        <button type="submit">Delete</button>
-      </form>
+      <% reviews.forEach(review => { %>
 
-      <!-- UPDATE -->
-      <form action="/reviews/update" method="POST">
-        <input type="hidden" name="reviewId" value="<%= review.id %>">
+        <tr>
+          <td><%= review.user ? review.user.username : "User" %></td>
+          <td><%= review.rating %></td>
+          <td><%= review.comment %></td>
 
-        <input type="number" name="rating" value="<%= review.rating %>" min="1" max="5">
-        <input type="text" name="comment" value="<%= review.comment %>">
+          <td>
+            <!-- UPDATE -->
+            <a href="/reviews/edit?reviewId=<%= review._id %>">Update</a>
 
-        <button type="submit">Update</button>
-      </form>
-  <% }) %>
+            <!-- DELETE -->
+            <form action="/reviews/delete" method="POST" style="display:inline;">
+              <input type="hidden" name="reviewId" value="<%= review._id %>">
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
 
-<% } %>
+      <% }) %>
+
+    <% } %>
+
+  </tbody>
+</table>

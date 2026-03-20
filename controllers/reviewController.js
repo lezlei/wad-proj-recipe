@@ -10,14 +10,14 @@ exports.createReview = async (req, res) => {
         let comment = req.body.comment;
         let userId= req.session.userId;
 
-        const review = {
-          user: userId,
-          recipe: recipeId,
-          rating: rating,
-          comment: comment
-        };
+        const newReview = {
+        user: userId,
+        recipe: recipeId,
+        rating: rating,
+        comment: comment
+      };
 
-        await review.create(review);
+      await review.create(newReview);
 
         res.redirect('/reviews?recipeId=' + recipeId)
   } catch (error) {
@@ -31,7 +31,7 @@ exports.updateReview = async (req, res) => {
     const rating = req.body.rating;
     const comment = req.body.comment;
 
-    const review = await Review.findById(reviewId);
+    const reviewData = await review.findById(reviewId);
 
     await review.findByIdAndUpdate(
       reviewId,
@@ -67,6 +67,16 @@ exports.getReviewsPage = async (req, res) => {
     const reviews = await review.find({ recipe: recipeId });
 
     res.render('review', { reviews, recipeId });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+exports.getUpdatePage = async (req, res) => {
+  try {
+    const reviewData = await review.findById(req.params.id);
+
+    res.render("edit-review", { review });
 
   } catch (error) {
     res.status(500).json({ error: error.message });

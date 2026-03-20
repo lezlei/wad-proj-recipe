@@ -1,0 +1,21 @@
+<h2>Edit Review</h2>
+
+<form action="/reviews/update" method="POST">
+
+  <input type="hidden" name="reviewId" value="<%= review._id %>">
+
+  <label>Rating:</label>
+  <input type="number" name="rating" value="<%= review.rating %>" min="1" max="5">
+
+  <br>
+
+  <label>Comment:</label>
+  <textarea name="comment"><%= review.comment %></textarea>
+
+  <br>
+
+  <button type="submit">Save Changes</button>
+
+</form>
+
+<a href="/reviews?recipeId=<%= review.recipe %>">Back</a>
