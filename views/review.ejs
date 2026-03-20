@@ -1,32 +1,58 @@
 <h3>Add Review</h3>
 
-<form action="/reviews" method="POST">
-  <input type="text" name="recipeId" value="<%= recipe._id %>">
-
-  <label>Rating:</label>
+<form action="/reviews/create" method="POST">
+  <input type="hidden" name="recipeId" value="<%= recipeId %>">
+  <br>
+  Rating:<input type="hidden" name="rating">
   <input type="number" name="rating" min="1" max="5" required>
-
   <br>
-
-  <label>Comment:</label>
-  <textarea name="comment" required></textarea>
-
+  Comment:<textarea name="comment" required></textarea>
   <br>
-
   <button type="submit">Submit Review</button>
 </form>
 
+
+<form action="/reviews/delete" method="POST">
+  <input type="hidden" name="reviewId" value="<%= reviewId %>">
+  <br>
+  <button type="submit">Delete</button>
+</form>
+
+<form action="/reviews/update" method="POST">
+  <input type="hidden" name="reviewId" value="<%= reviewId %>">
+  <input type="number" name="rating" value="<%= review.rating %>">
+  <input type="text" name="comment" value="<%= review.comment %>">
+  <br>
+  <button type="submit">Update</button>
+</form>
+
 <h3>Reviews</h3>
+
 <% if (reviews.length === 0) { %>
   <p>No reviews yet.</p>
 <% } else { %>
-    <% reviews.forEach(review => { %>
-    <p><%= review.user.username %></p>
-    <p>Rating: <%= review.rating %>/5</p>
-    <p><%= review.comment %></p>
-    <% })  %>
-    <!-- Delete button (optional) -->
-    <form action="/reviews/delete/<%= review._id %>" method="POST">
-      <button type="submit">Delete</button>
-    </form>
-<% }%>
+
+  <% reviews.forEach(review => { %>
+
+      <p><strong><%= review.user ? review.user.username : "User" %></strong></p>
+      <p>Rating: <%= review.rating %>/5</p>
+      <p><%= review.comment %></p>
+
+      <!-- DELETE -->
+      <form action="/reviews/delete" method="POST">
+        <input type="hidden" name="reviewId" value="<%= reviewId %>">
+        <button type="submit">Delete</button>
+      </form>
+
+      <!-- UPDATE -->
+      <form action="/reviews/update" method="POST">
+        <input type="hidden" name="reviewId" value="<%= reviewId %>">
+
+        <input type="number" name="rating" value="<%= review.rating %>" min="1" max="5">
+        <input type="text" name="comment" value="<%= review.comment %>">
+
+        <button type="submit">Update</button>
+      </form>
+  <% }) %>
+
+<% } %>

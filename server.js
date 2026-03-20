@@ -26,7 +26,8 @@ const recipeRoutes = require('./routes/recipes');
 const reviewRoutes = require('./routes/review')
 app.use('/auth', authRoutes);
 app.use('/', homeRoutes);
-app.use('/',recipeRoutes);
+app.use('/',recipeRoutes)
+app.use('/reviews',reviewRoutes);
 
 // Connect to MongoDB function
 async function connectDB() {
