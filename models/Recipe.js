@@ -53,5 +53,7 @@ exports.searchByAuthor = function(userIds) {
     return Recipe.find({ authorID: { $in : userIds } }).populate('authorID');
 };
 
-// Function to delete a recipe from database (to be done)
-
+// Function to delete a recipe from database
+exports.deleteRecipe = function(recipeId, authorId) {
+    return Recipe.findOneAndDelete({ _id: recipeId, authorID: authorId });
+};

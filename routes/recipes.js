@@ -15,4 +15,7 @@ router.get('/recipes/:id/edit',recipeController.updateGet)
 
 router.post('/recipes/:id/update',recipeController.updatePost)
 
+// Post Form to delete recipe
+router.post('/recipes/:id/delete', recipeController.deletePost);
+
 module.exports = router

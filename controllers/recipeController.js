@@ -142,3 +142,31 @@ exports.updatePost = async (req,res)=>{
         res.redirect('/recipes');
     }
 }
+
+// Logic for POST delete-recipe to remove a recipe and redirect back to browse-recipe
+exports.deletePost = async (req, res) => {
+    try {
+        const recipeId = req.params.id;
+        const currentUserID = req.session.userId;
+
+        // Ensure user is logged in
+        if (!currentUserID) {
+            return res.redirect('/auth/login');
+        }
+
+        // Delete the recipe using the model function
+        const deleteCheck = await Recipe.deleteRecipe(recipeId, currentUserID);
+
+        if (deleteCheck) {
+            console.log(`Recipe deleted for user ${currentUserID}`);
+        } else {
+            console.log(`Recipe does not exist or unauthorized!`);
+        }
+        
+        res.redirect("/recipes");
+
+    } catch (error) {
+        console.error(error);
+        res.redirect('/recipes');
+    }
+};
