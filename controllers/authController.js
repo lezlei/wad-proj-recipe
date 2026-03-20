@@ -32,6 +32,7 @@ exports.postLogin = async (req, res) => {
         if (isMatch) {
             req.session.userId = user._id;
             req.session.username = user.username;
+            req.session.role = user.role;
             res.redirect('/');
         } else {
             res.send("Invalid username or password.");

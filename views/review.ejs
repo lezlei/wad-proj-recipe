@@ -51,14 +51,16 @@
           <td><%= review.comment %></td>
 
           <td>
-            <!-- UPDATE -->
-            <a href="/reviews/edit/<%= review._id %>">Update</a>
+            <% if (review.user && (review.user._id.toString() === String(userId) || role === "admin")) { %>
+              <!-- UPDATE -->
+              <a href="/reviews/edit/<%= review._id %>">Update</a>
 
-            <!-- DELETE -->
-            <form action="/reviews/delete" method="POST" style="display:inline;">
-              <input type="hidden" name="reviewId" value="<%= review._id %>">
-              <button type="submit">Delete</button>
-            </form>
+              <!-- DELETE -->
+              <form action="/reviews/delete" method="POST" style="display:inline;">
+                <input type="hidden" name="reviewId" value="<%= review._id %>">
+                <button type="submit">Delete</button>
+              </form>
+            <% } %>
           </td>
         </tr>
 

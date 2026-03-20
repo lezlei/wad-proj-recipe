@@ -2,35 +2,43 @@ const User = require('../models/User');
 const Recipe = require('../models/Recipe');
 
 // Logic for GET browse-recipe to see user's recipes and everyone's recipe
-exports.displayRecipes = async (req,res) => {
-    try { 
-        const currentUserID = req.session.userId
-        
+exports.displayRecipes = async (req, res) => {
+  try { 
+    const currentUserID = req.session.userId;
 
-        if (!currentUserID){
-            return res.redirect('/auth/login')
-        }
+    if (!currentUserID) {
+      return res.redirect('/auth/login');
+    }
 
-        const { search = '', filter = '' } = req.query;
+    const { search = '', filter = '' } = req.query;
 
-        const userRecipes = await Recipe.findByID(currentUserID);
+    // Fixed: use Mongoose's find() instead of findByID
+    const userRecipes = await Recipe.find({ authorID: currentUserID });
 
-        let allRecipes;
+    let allRecipes;
 
-        if (!search) {
-            allRecipes = await Recipe.retrieveAll();
-        } else if (filter === 'author') {
-            const matchedUsers = await User.find({ username: { $regex: search, $options: 'i' } });
-            const userIds = matchedUsers.map(u => u._id);
-            allRecipes = await Recipe.searchByAuthor(userIds);
-        } else if (filter === 'title'){
-            allRecipes = await Recipe.searchByTitle(search);
-        }
-        
-        res.render('recipe/browse-recipe', {myRecipes : userRecipes, allRecipes: allRecipes, user: req.session.user, search, filter});
-    } catch (error) {
-        console.error(error);
-    };
+    if (!search) {
+      allRecipes = await Recipe.retrieveAll();
+    } else if (filter === 'author') {
+      const matchedUsers = await User.find({ username: { $regex: search, $options: 'i' } });
+      const userIds = matchedUsers.map(u => u._id);
+      allRecipes = await Recipe.searchByAuthor(userIds);
+    } else if (filter === 'title'){
+      allRecipes = await Recipe.searchByTitle(search);
+    }
+
+    res.render('recipe/browse-recipe', {
+      myRecipes: userRecipes,
+      allRecipes: allRecipes,
+      user: req.session.user,
+      search,
+      filter
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.redirect('/recipes');
+  }
 };
 
 // Logic for GET create-recipe to see form for user to create recipe

@@ -27,7 +27,13 @@
     <% } else { %>
       <% myRecipes.forEach(recipe => { %>
         <tr>
-          <td><%= recipe.title %></td>
+          <td>
+            <%= recipe.title %>
+            <br>
+            Avg Rating: <%= recipe.avgScore.toFixed(2) %> / 5
+            <br>
+            Reviews: <%= recipe.reviewCount %>
+          </td>
           <td><%= recipe.description %></td>
           <td>
             <ul>
@@ -113,9 +119,13 @@
           <td><%= recipe.instructions %></td>
           <td><%= recipe.authorID ? recipe.authorID.username : 'Unknown' %></td>
           <td>
-          <a href="/reviews?recipeId=<%= recipe._id %>">View Reviews</a>
-        </td>
-
+            <a href="/reviews?recipeId=<%= recipe._id %>">View Reviews</a>
+            <br>
+            Avg Rating: <%= recipe.avgScore.toFixed(2) %> / 5
+            <br>
+            Reviews: <%= recipe.reviewCount %>
+          </td>
+          
           <% if (user && user.role === 'admin') { %>
             <td>
               <a href="/recipes/<%= recipe._id %>/edit">Edit</a>
