@@ -62,7 +62,10 @@
             <% if (review.user && (review.user._id.toString() === String(userId) || role === "admin")) { %>
               <!-- UPDATE -->
               <td>
-                <a href="/reviews/edit/<%= review._id %>">Update</a>
+                <form action="/reviews/edit" method="GET" style="display:inline;">
+                  <input type="hidden" name="reviewId" value="<%= review._id %>">
+                  <button type="submit">Update</button>
+                </form>
               </td>
               <!-- DELETE -->
               <td>

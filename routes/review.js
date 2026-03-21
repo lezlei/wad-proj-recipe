@@ -11,7 +11,7 @@ router.get("/", reviewController.getReviewsPage);
 router.post("/", reviewController.createReview);
 //update reviews
 router.post("/update",reviewController.updateReview);
-router.get("/edit/:id", reviewController.getUpdatePage);
+router.get("/edit", reviewController.getUpdatePage);
 //delete review
 router.post("/delete", reviewController.deleteReview);
 

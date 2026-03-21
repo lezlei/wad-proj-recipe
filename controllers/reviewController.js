@@ -117,7 +117,8 @@ exports.getReviewsPage = async (req, res) => {
 // Render edit review page
 exports.getUpdatePage = async (req, res) => {
   try {
-    const reviewData = await Review.findById(req.params.id);
+    const reviewId= req.query.reviewId;
+    const reviewData = await Review.findById(reviewId);
     res.render("edit-review", { review: reviewData });
   } catch (error) {
     res.status(500).json({ error: error.message });
