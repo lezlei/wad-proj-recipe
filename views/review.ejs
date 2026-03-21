@@ -37,7 +37,7 @@
       <th>Comment</th>
       <% reviews.forEach(review => { %>
         <% if (review.user && (review.user._id.toString() === String(userId) || role === "admin")) { %>
-          <th>Actions</th>
+          <th colspan="2">Actions</th>
         <% } %>
       <% }) %>
     </tr>
