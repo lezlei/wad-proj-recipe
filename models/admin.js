@@ -1,0 +1,33 @@
+const User = require('./User')
+
+exports.getAllUsers = async function () {
+    return await User.find({})
+}
+
+exports.updateRole = async function (userId, newRole) {
+    try {
+        let result = await User.updateOne({ _id: userId}, {role:newRole})
+        return result.modifiedCount > 0
+
+    } catch (error) {
+        console.error(error)
+        return false
+    }
+}
+
+exports.SuspendUser = async function (userId) {
+    try {
+        let user = await User.findById(userId)
+
+        if (!user) {
+            return false
+        }
+
+        const newStatus = !user.isSuspended
+
+        const result = await User.updateOne({ _id: userId}, {isSuspended: newStatus})
+        return result.modifiedCount > 0
+    } catch (error) {
+        console.error(error)
+    }
+}

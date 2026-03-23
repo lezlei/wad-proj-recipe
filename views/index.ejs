@@ -18,6 +18,9 @@
             <ul>
                 <li><a href="/auth/profile">View My Profile (Update/Delete)</a></li>
                 <li><a href="/recipes">Browse Recipes</a></li>
+                <% if (role === 'admin') { %>
+                    <li><a href="/auth/admin">Admin Panel</a></li>
+                <% } %>
                 <li><a href="/auth/logout">Logout</a></li>
             </ul>
         </nav>
