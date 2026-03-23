@@ -1,42 +1,46 @@
 <% if (message) { %>
+
   <p><%= message %></p>
+
   <a href="/recipes/recommendation">Start Again</a> <br><br>
+
   <a href="/recipes">Back to Recipes</a>
-<% } else if (randomRecipe) { %>
+
+<% } else if (randomRecipe) { %>  
   <h2><u><%= randomRecipe.title %></u></h2>
 
-<strong>Cuisine</strong> <br>
-<%= randomRecipe.cuisine %> <br><br>
+  <strong>Cuisine</strong> <br>
+  <%= randomRecipe.cuisine %> <br><br>
 
-<strong>Description</strong> <br>
-<%= randomRecipe.description %> <br><br>
+  <strong>Description</strong> <br>
+  <%= randomRecipe.description %> <br><br>
 
-<strong>Ingredients</strong>
-<ul>
+  <strong>Ingredients</strong>
+  <ul>
     <% randomRecipe.ingredients.forEach(ing => { %>
     <li><%= ing %></li>
     <% }) %>
-</ul>
+  </ul>
 
 
-<strong>Instructions</strong> <br>
-<%= randomRecipe.instructions %> <br><br>
+  <strong>Instructions</strong> <br>
+  <%= randomRecipe.instructions %> <br><br>
 
-Avg Rating: <%= randomRecipe.avgScore.toFixed(2) %> / 5 
+  Avg Rating: <%= randomRecipe.avgScore.toFixed(2) %> / 5 
 
-<br>
+  <br>
 
-Reviews: <%= randomRecipe.reviewCount %> 
+  Reviews: <%= randomRecipe.reviewCount %> 
 
-<br>
+  <br>
 
-<a href="/reviews?recipeId=<%= randomRecipe._id %>">View Reviews</a>
+  <a href="/reviews?recipeId=<%= randomRecipe._id %>">View Reviews</a>
 
-<br><br>
+  <br><br>
 
-<form action="/recipes/recommendation" method="get">
-  <button>Get another Recommendation</button>
-</form>
+  <form action="/recipes/recommendation" method="get">
+    <button>Get another Recommendation</button>
+  </form>
 
-<a href="/recipes">Back to Recipes</a>
+  <a href="/recipes">Back to Recipes</a>
 <% } %>
