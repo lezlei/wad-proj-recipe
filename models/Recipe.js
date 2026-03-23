@@ -92,7 +92,7 @@ Recipe.getRandom = async function(userId, seenIds = []){
 
   const skip = Math.floor(Math.random() * count);
 
-  return this.findOne(query).skip(skip).populate('authorID');
+  return Recipe.findOne(query).skip(skip).populate('authorID');
 };
 
 // Export the model (with helpers attached)
