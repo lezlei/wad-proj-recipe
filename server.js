@@ -14,7 +14,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); 
 app.use(session({
-  secret: "smu-is113-secret-key",
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: false
 }));
