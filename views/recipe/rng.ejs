@@ -1,4 +1,8 @@
-<h2><u><%= randomRecipe.title %></u></h2>
+<% if (message) { %>
+  <p><%= message %></p>
+  <a href="/recipes/recommendation">Start Again</a>
+<% } else if (randomRecipe) { %>
+  <h2><u><%= randomRecipe.title %></u></h2>
 
 <strong>Cuisine</strong> <br>
 <%= randomRecipe.cuisine %> <br><br>
@@ -34,3 +38,8 @@ Reviews: <%= randomRecipe.reviewCount %>
 </form>
 
 <a href="/recipes">Back to Recipes</a>
+<% } %>
+
+
+
+

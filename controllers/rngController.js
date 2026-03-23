@@ -9,9 +9,21 @@ exports.displayReco = async (req,res) => {
             return res.redirect('/auth/login');
         }
         
-        const randomRecipe = await Recipe.getRandom();
+        if (!req.session.seenRecipes) {
+            req.session.seenRecipes = [];
+        }
+
+        const randomRecipe = await Recipe.getRandom(currentUserID, req.session.seenRecipes);
         
-        res.render('recipe/rng', {randomRecipe});
+        if (!randomRecipe) {
+            req.session.seenRecipes = [];
+            return res.render('recipe/rng', { randomRecipe: null, message: 'You have seen all recipes!' });
+        }
+
+        // add current recipe to seen list
+        req.session.seenRecipes.push(randomRecipe._id.toString());
+
+        res.render('recipe/rng', {randomRecipe, message: ''});
 
     } catch (err) {
         console.log("Error:", err);
@@ -21,9 +33,29 @@ exports.displayReco = async (req,res) => {
 
 exports.redisplayReco = async (req,res) => {
     try {
-        const randomRecipe = await Recipe.getRandom();
+       const currentUserID = req.session.userId;
 
-        res.render('recipe/rng', {randomRecipe});
+        if (!currentUserID) {
+            return res.redirect('/auth/login');
+        }
+
+        if (!req.session.seenRecipes) {
+            req.session.seenRecipes = [];
+        }
+
+        const randomRecipe = await Recipe.getRandom(currentUserID, req.session.seenRecipes);
+
+        if (!randomRecipe) {
+            req.session.seenRecipes = [];
+            return res.render('recipe/rng', { 
+                randomRecipe: null, 
+                message: 'You have seen all recipes!' 
+            });
+        }
+
+        req.session.seenRecipes.push(randomRecipe._id.toString());
+
+        res.render('recipe/rng', { randomRecipe, message: null });
     } catch (err) {
         console.log("Error:", err);
         res.send('Failed to redisplay recommendation form.');

@@ -81,10 +81,18 @@ Recipe.deleteRecipe = function(recipeId, authorId) {
 };
 
 // Function to get a random recipe from the database
-Recipe.getRandom = async function(){
-    const count = await this.countDocuments();
-    const skip = Math.floor(Math.random() * count);
-    return this.findOne().skip(skip).populate('authorID');
+Recipe.getRandom = async function(userId, seenIds = []){
+    const query = {
+    authorID: { $ne: userId },      // not the user's own recipes
+    _id: { $nin: seenIds }                 // not already seen
+  };
+
+  const count = await this.countDocuments(query);
+  if (count === 0) return null;            // all recipes seen
+
+  const skip = Math.floor(Math.random() * count);
+
+  return this.findOne(query).skip(skip).populate('authorID');
 };
 
 // Export the model (with helpers attached)
