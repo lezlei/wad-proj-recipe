@@ -44,7 +44,7 @@ exports.displayRecipes = async (req, res) => {
       myRecipes: userRecipes,
       favRecipes: favRecipes,
       allRecipes: allRecipes,
-      user: req.session.user,
+      user: user,
       search,
       filter
     });
@@ -115,12 +115,23 @@ exports.updateGet = async (req,res)=>{
 
         const recipeId = req.params.id;
 
-        const existingRecipe = await Recipe.findOneRecipe(recipeId, currentUserID);
+        const user = await User.findById(currentUserID);
+
+        // admin bypasses author check
+        let existingRecipe;
+
+        if (user.role === 'admin') {
+        // admin can find ANY recipe regardless of who owns it
+            existingRecipe = await Recipe.findById(recipeId);
+        } else {
+        // regular user can only find recipes they own
+            existingRecipe = await Recipe.findOneRecipe(recipeId, currentUserID);
+        }
 
         if (!existingRecipe) {
             console.log("Recipe not found!");
             return res.redirect('/recipes');
-        }
+        };
 
         res.render("recipe/update-recipe", {recipe: existingRecipe});
     } catch (error) {
@@ -140,6 +151,8 @@ exports.updatePost = async (req,res)=>{
             return res.redirect('/auth/login');
         }
 
+        const user = await User.findById(currentUserID);
+
         const ingredientsArray = ingredients.split('\n').filter(line => line.trim() !== '');
 
         const updatedRecipe = {
@@ -148,11 +161,17 @@ exports.updatePost = async (req,res)=>{
             description : description,
             ingredients : ingredientsArray,
             instructions : instructions,
-            authorID : currentUserID
         };
 
-        const updateCheck = await Recipe.updateRecipe(recipeId, currentUserID, updatedRecipe);
-
+        let updateCheck;
+        
+        if (user.role === 'admin'){
+            updateCheck = await Recipe.findByIdAndUpdate(recipeId, updatedRecipe, { new : true });
+        } else {
+            updatedRecipe.authorID = currentUserID;
+            updateCheck = await Recipe.updateRecipe(recipeId, currentUserID, updatedRecipe);
+        };
+        
         if (updateCheck) {
             console.log(`${title} recipe updated for user ${currentUserID}`);
             res.redirect("/recipes");
