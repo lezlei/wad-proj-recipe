@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Digital Recipe Box - Admin Dashboard</h1>
+
+    <p><a href="/">Back to Home</a></p>
+    
+    <table border="1">
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Current Role</th>
+            <th>Promote / Demote</th>
+            <th>Account Access</th>
+        </tr>
+        <% for (let user of users) { %>
+            <tr>
+                <td><%= user._id %></td>
+                <td><strong><%= user.username %></strong></td>
+                <td><%= user.email %></td>
+                
+                <td>
+                    <% if (user.isSuspended) { %>
+                        Banned
+                    <% } else { %>
+                        Active
+                    <% } %>
+                </td>
+                
+                <td><%= user.role %></td>
+                
+                <td>
+                    <form action="/auth/update-role" method="POST" style="margin: 0;">
+                        <input type="hidden" name="id" value="<%= user._id %>">
+                        <select name="role">
+                            <option value="user" <%= user.role === 'user' ? 'selected' : '' %>>User</option>
+                            <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                        </select>
+                        <button type="submit" class="btn-save">Save</button>
+                    </form>
+                </td>
+
+                <td>
+                    <form action="/auth/toggle-suspend" method="POST"
+                          onsubmit="return confirm('Are you sure you want to ban this user?');">
+                        <input type="hidden" name="id" value="<%= user._id %>">
+                        
+                        <% if (user.isSuspended) { %>
+                            <button type="submit" class="btn-unban">Unban User</button>
+                        <% } else { %>
+                            <button type="submit" class="btn-suspend">Suspend User</button>
+                        <% } %>
+                    </form>
+                </td>
+            </tr>
+        <% } %>
+    </table>
+</body>
+</html>

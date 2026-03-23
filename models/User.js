@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     dateJoined: { 
         type: Date, 
         default: Date.now 
+    },
+    isSuspended: {
+        type: Boolean,
+        default: false
     }
 });
 

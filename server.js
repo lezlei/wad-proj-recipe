@@ -24,10 +24,12 @@ const authRoutes = require('./routes/auth');
 const homeRoutes = require('./routes/home'); 
 const recipeRoutes = require('./routes/recipes');
 const reviewRoutes = require('./routes/review')
+const adminRoutes = require('./routes/admin')
 app.use('/auth', authRoutes);
 app.use('/', homeRoutes);
 app.use('/',recipeRoutes)
 app.use('/reviews',reviewRoutes);
+app.use('/auth', adminRoutes)
 
 // Connect to MongoDB function
 async function connectDB() {
