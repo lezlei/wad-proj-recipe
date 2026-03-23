@@ -15,6 +15,15 @@ exports.displayRecipes = async (req, res) => {
     // Fixed: use Mongoose's find() instead of findByID
     const userRecipes = await Recipe.find({ authorID: currentUserID });
 
+    // Gets user's full profile
+    const user = await User.findById(currentUserID).populate({
+        path : 'favourites',
+        populate : { path : 'authorID' }
+    });
+
+    // Get user's favourite from profile
+    const favRecipes = user.favourites;
+
     let allRecipes;
 
     if (!search) {
@@ -33,6 +42,7 @@ exports.displayRecipes = async (req, res) => {
 
     res.render('recipe/browse-recipe', {
       myRecipes: userRecipes,
+      favRecipes: favRecipes,
       allRecipes: allRecipes,
       user: req.session.user,
       search,

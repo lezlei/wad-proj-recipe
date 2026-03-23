@@ -12,6 +12,23 @@ router.get('/recipes/create', recipeController.createGet);
 // Post Form after filling in the recipe form
 router.post('/recipes/create', recipeController.createPost);
 
+
+
+// DYNAMIC routes to displayReco/addFav
+
+// GET Form for recommendation
+router.get('/recipes/recommendation', rngController.displayReco);
+
+// POST Form for adding to favourites
+router.post('/favourites/:recipeId/add', rngController.addFavourite);
+
+// GET Form for next recommendation
+router.get('/recipes/recommendation/next', rngController.displayNextReco);
+
+
+
+// DYNAMIC routes to update/delete recipe
+
 // Get Form to edit recipe
 router.get('/recipes/:id/edit',recipeController.updateGet)
 
@@ -21,7 +38,5 @@ router.post('/recipes/:id/update',recipeController.updatePost)
 // Post Form to delete recipe
 router.post('/recipes/:id/delete', recipeController.deletePost);
 
-// GET Form for recommendation
-router.get('/recipes/recommendation', rngController.displayReco);
 
 module.exports = router
