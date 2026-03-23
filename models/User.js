@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    // Record User's favourited recipes
+    // Record User's favourited recipes 
     favourites: [
         { 
         type: mongoose.Schema.Types.ObjectId, 
