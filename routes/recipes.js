@@ -24,7 +24,4 @@ router.post('/recipes/:id/delete', recipeController.deletePost);
 // GET Form for recommendation
 router.get('/recipes/recommendation', rngController.displayReco);
 
-// POST Form for another recommendation
-router.post('/recipes/recommendation', rngController.redisplayReco);
-
 module.exports = router
