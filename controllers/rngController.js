@@ -52,15 +52,29 @@ exports.displayReco = async (req,res) => {
 
 exports.addFavourite = async (req,res) => {
     try {
+        // Gets current userid
         const currentUserID = req.session.userId;
 
+        // Gets current recipeid
         const recipeID = req.params.recipeId;
 
-        await User.findByIdAndUpdate(currentUserID, {
-            $addToSet : { favourites : recipeID }
-        });
+        // Checks if recipe already inside user's array of favourites
+        const user = await User.findById(currentUserID);
+        const alreadyFavourited = user.favourites.includes(recipeID)
 
-        req.session.favmessage = 'Added to favourites!'
+
+
+        // Appends new recipeid into user's array of favourites if not inside already
+        if (alreadyFavourited){
+            req.session.favmessage = 'Already added to favourites!'
+        } else {
+            await User.findByIdAndUpdate(currentUserID, {
+                $addToSet : { favourites : recipeID }
+            });
+
+            req.session.favmessage = 'Added to favourites!'
+        };
+
         res.redirect('/recipes/recommendation');
     
     } catch (err) {
