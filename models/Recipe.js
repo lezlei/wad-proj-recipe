@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 // Recipe Schema
 const recipeSchema = new mongoose.Schema({
     title: String,
+    cuisine: String,
     description: String,
     ingredients: [String],
     instructions: String,
@@ -62,6 +63,16 @@ Recipe.searchByTitle = function(query){
 // Function to filter recipes by same author when searching
 Recipe.searchByAuthor = function(userIds) {
     return Recipe.find({ authorID: { $in : userIds } }).populate('authorID');
+};
+
+// Function to filter recipes by same ingredient when searching
+Recipe.searchByIngredient = function(query) {
+    return Recipe.find({ ingredients: {$elemMatch : { $regex: query, $options: 'i' } }}).populate('authorID');
+};
+
+// Function to filter recipes by same cuisine when searching
+Recipe.searchByCuisine = function(query) {
+    return Recipe.find({ cuisine : { $regex: query, $options: 'i' } }).populate('authorID');
 };
 
 // Function to delete a recipe from database

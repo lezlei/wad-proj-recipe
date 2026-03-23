@@ -10,8 +10,11 @@
 
     <form method="POST" action="/recipes/<%= recipe._id %>/update">
         
-        <label>Title</label><br>
+        <label>Update Title</label><br>
         <input type="text" name="title" value="<%= recipe.title %>" required><br><br>
+
+        <label>Update Cuisine</label><br>
+        <input type="text" name="cuisine" value="<%= recipe.cuisine %>" required><br><br>
 
         <label>Update Description</label><br>
         <textarea name="description" required><%= recipe.description %></textarea><br><br>

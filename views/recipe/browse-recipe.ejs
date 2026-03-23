@@ -13,6 +13,7 @@
   <thead>
     <tr>
       <th>Title</th>
+      <th>Cuisine</th>
       <th>Description</th>
       <th>Ingredients</th>
       <th>Instructions</th>
@@ -34,6 +35,7 @@
             <br>
             Reviews: <%= recipe.reviewCount %>
           </td>
+          <td><%= recipe.cuisine %></td>
           <td><%= recipe.description %></td>
           <td>
             <ul>
@@ -80,6 +82,8 @@
   <select name="filter">
     <option value="title" <%= filter === 'title' ? 'selected' : '' %>>By Title</option>
     <option value="author" <%= filter === 'author' ? 'selected' : '' %>>By Author</option>
+    <option value="ingredients" <%= filter === 'ingredients' ? 'selected' : '' %>>By Ingredients</option>
+    <option value="cuisine" <%= filter === 'cuisine' ? 'selected' : '' %>>By Cuisine</option>
   </select>
 
   <button type="submit">Search</button>
@@ -92,6 +96,7 @@
   <thead>
     <tr>
       <th>Title</th>
+      <th>Cuisine</th>
       <th>Description</th>
       <th>Ingredients</th>
       <th>Instructions</th>
@@ -108,6 +113,7 @@
       <% allRecipes.forEach(recipe => { %>
         <tr>
           <td><%= recipe.title %></td>
+          <td><%= recipe.cuisine %></td>
           <td><%= recipe.description %></td>
           <td>
             <ul>
