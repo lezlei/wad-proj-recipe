@@ -87,7 +87,7 @@ Recipe.getRandom = async function(userId, seenIds = []){
     _id: { $nin: seenIds }                 // not already seen
   };
 
-  const count = await this.countDocuments(query);
+  const count = await Recipe.countDocuments(query);
   if (count === 0) return null;            // all recipes seen
 
   const skip = Math.floor(Math.random() * count);
