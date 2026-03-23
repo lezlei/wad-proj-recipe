@@ -45,6 +45,7 @@ exports.updateReview = async (req, res) => {
     const userRole = req.session.role;
 
     const reviewData = await Review.findById(reviewId).populate("user");
+    // this is for mongoDB to go and fetch the review data based on the userId so we can do reviewData.recipe;
     if (!reviewData) return res.send("Review not found.");
 
     if (reviewData.user._id.toString() !== userId && userRole !== "admin") {
