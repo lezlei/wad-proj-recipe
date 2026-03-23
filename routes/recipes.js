@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const recipeController = require('../controllers/recipeController');
+const rngController = require('../controllers/rngController');
 
 // Get and display all recipes from specific user and everyone else when 'Browse Recipes' is clicked
 router.get("/recipes", recipeController.displayRecipes);
@@ -19,5 +20,11 @@ router.post('/recipes/:id/update',recipeController.updatePost)
 
 // Post Form to delete recipe
 router.post('/recipes/:id/delete', recipeController.deletePost);
+
+// GET Form for recommendation
+router.get('/recipes/recommendation', rngController.displayReco);
+
+// POST Form for another recommendation
+router.post('/recipes/recommendation', rngController.redisplayReco);
 
 module.exports = router

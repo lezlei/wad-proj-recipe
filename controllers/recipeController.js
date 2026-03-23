@@ -25,7 +25,11 @@ exports.displayRecipes = async (req, res) => {
       allRecipes = await Recipe.searchByAuthor(userIds);
     } else if (filter === 'title'){
       allRecipes = await Recipe.searchByTitle(search);
-    }
+    } else if (filter === 'ingredients') {
+      allRecipes = await Recipe.searchByIngredient(search);   
+    } else if (filter === 'cuisine') {
+        allRecipes = await Recipe.searchByCuisine(search);
+    }   
 
     res.render('recipe/browse-recipe', {
       myRecipes: userRecipes,
@@ -59,7 +63,7 @@ exports.createGet = async (req,res) => {
 // Logic for POST create-recipe to submit form and redirect the user back to browse-recipe
 exports.createPost = async (req,res) => {
     try {
-        const {title, description, ingredients, instructions} = req.body;
+        const {title, cuisine, description, ingredients, instructions} = req.body;
 
         const currentUserID = req.session.userId;
 
@@ -71,6 +75,7 @@ exports.createPost = async (req,res) => {
 
         const newRecipe = {
             title : title,
+            cuisine : cuisine,
             description : description,
             ingredients : ingredientsArray,
             instructions : instructions,
@@ -118,7 +123,7 @@ exports.updateGet = async (req,res)=>{
 exports.updatePost = async (req,res)=>{
     try {
         const recipeId = req.params.id;
-        const {title, description, ingredients, instructions} = req.body;
+        const {title, cuisine, description, ingredients, instructions} = req.body;
         const currentUserID = req.session.userId;
 
         if (!currentUserID) {
@@ -129,6 +134,7 @@ exports.updatePost = async (req,res)=>{
 
         const updatedRecipe = {
             title : title,
+            cuisine : cuisine,
             description : description,
             ingredients : ingredientsArray,
             instructions : instructions,

@@ -1,0 +1,36 @@
+<h2><u><%= randomRecipe.title %></u></h2>
+
+<strong>Cuisine</strong> <br>
+<%= randomRecipe.cuisine %> <br><br>
+
+<strong>Description</strong> <br>
+<%= randomRecipe.description %> <br><br>
+
+<strong>Ingredients</strong>
+<ul>
+    <% randomRecipe.ingredients.forEach(ing => { %>
+    <li><%= ing %></li>
+    <% }) %>
+</ul>
+
+
+<strong>Instructions</strong> <br>
+<%= randomRecipe.instructions %> <br><br>
+
+Avg Rating: <%= randomRecipe.avgScore.toFixed(2) %> / 5 
+
+<br>
+
+Reviews: <%= randomRecipe.reviewCount %> 
+
+<br>
+
+<a href="/reviews?recipeId=<%= randomRecipe._id %>">View Reviews</a>
+
+<br><br>
+
+<form action="/recipes/recommendation" method="post">
+  <button>Get another Recommendation</button>
+</form>
+
+<a href="/recipes">Back to Recipes</a>
