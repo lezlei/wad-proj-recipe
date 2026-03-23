@@ -99,9 +99,7 @@
         <tr>
 
           <td>
-            <%= recipe.title %><br>
-            Avg Rating: <%= recipe.avgScore ? recipe.avgScore.toFixed(2) : 'N/A' %> / 5<br>
-            Reviews: <%= recipe.reviewCount %>
+            <%= recipe.title %>
           </td>
 
           <td><%= recipe.cuisine %></td>
@@ -127,7 +125,9 @@
           </td>
 
           <td>
-            <a href="/reviews?recipeId=<%= recipe._id %>">View Reviews</a>
+            <a href="/reviews?recipeId=<%= recipe._id %>">View Reviews</a> <br>
+            Avg Rating: <%= recipe.avgScore ? recipe.avgScore.toFixed(2) : 'N/A' %> / 5 <br>
+            Reviews: <%= recipe.reviewCount %>
           </td>
 
         </tr>
@@ -139,10 +139,6 @@
 <br>
 
 <a href="/recipes/create">+ Create New Recipe</a>
-
-<br><br>
-
-<a href="/recipes/recommendation">Don't know what to eat? Click Me!</a>
 
 <br><br>
 
@@ -167,6 +163,8 @@
     <a href="/recipes">Clear</a>
   <% } %>
 </form>
+
+<a href="/recipes/recommendation">Don't know what to eat? Click Me!</a> <br><br>
 
 <table border="1">
   <thead>
