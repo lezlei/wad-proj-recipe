@@ -16,9 +16,10 @@ exports.displayReco = async (req,res) => {
             req.session.seenRecipes = [];
         }   
 
+        // Get favmessage from session and reset it to empty
         const favmessage = req.session.favmessage || '';
         req.session.favmessage = '';
-        
+
         // If user has seen the recipe before and added it to favourites, render the same recipe
         if (req.session.currentRecipeId) {
             const sameRecipe = await Recipe.findById(req.session.currentRecipeId).populate('authorID');
