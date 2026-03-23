@@ -1,0 +1,39 @@
+<table border="1">
+  <style>
+              td {
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-left: 15px;
+                padding-right: 15px;
+              }
+            </style>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Cuisine</th>
+      <th>Description</th>
+      <th>Ingredients</th>
+      <th>Instructions</th>
+    </tr>
+  </thead>
+  <tbody>
+        <tr>
+          <td>
+            <%= randomRecipe.title %>
+            <br>
+            Avg Rating: <%= randomRecipe.avgScore.toFixed(2) %> / 5
+            <br>
+            Reviews: <%= randomRecipe.reviewCount %>
+          </td>
+          <td><%= randomRecipe.cuisine %></td>
+          <td><%= randomRecipe.description %></td>
+          <td>
+            <ul>
+              <% randomRecipe.ingredients.forEach(ing => { %>
+                <li><%= ing %></li>
+              <% }) %>
+            </ul>
+          </td>
+          <td><%= randomRecipe.instructions %></td>
+        </tr>
+    </tbody>

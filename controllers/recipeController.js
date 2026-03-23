@@ -29,7 +29,7 @@ exports.displayRecipes = async (req, res) => {
       allRecipes = await Recipe.searchByIngredient(search);   
     } else if (filter === 'cuisine') {
         allRecipes = await Recipe.searchByCuisine(search);
-    }
+    }   
 
     res.render('recipe/browse-recipe', {
       myRecipes: userRecipes,

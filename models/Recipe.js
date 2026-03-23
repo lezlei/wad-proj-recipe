@@ -80,5 +80,12 @@ Recipe.deleteRecipe = function(recipeId, authorId) {
     return Recipe.findOneAndDelete({ _id: recipeId, authorID: authorId });
 };
 
+// Function to get a random recipe from the database
+Recipe.getRandom = async function(){
+    const count = await this.countDocuments();
+    const skip = Math.floor(Math.random() * count);
+    return this.findOne().skip(skip).populate('authorID');
+};
+
 // Export the model (with helpers attached)
 module.exports = Recipe;
