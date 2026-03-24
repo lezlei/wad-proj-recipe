@@ -108,8 +108,31 @@ exports.deleteReview = async (req, res) => {
 exports.getReviewsPage = async (req, res) => {
   try {
     const recipeId = req.query.recipeId || '';
-    const reviews = await Review.find({ recipe: recipeId }).populate("user");
-    res.render('review', { reviews, recipeId, userId: req.session.userId, role: req.session.role });
+
+    // Fetch reviews
+    let reviews = await Review.find({ recipe: recipeId })
+      .populate("user");
+
+    // Sort by number of upvotes (descending)
+    reviews.sort((a, b) => {
+      const scoreA =
+        (a.votes || []).filter(v => v.value === 1).length -
+        (a.votes || []).filter(v => v.value === -1).length;
+
+      const scoreB =
+        (b.votes || []).filter(v => v.value === 1).length -
+        (b.votes || []).filter(v => v.value === -1).length;
+
+      return scoreB - scoreA;
+    });
+    
+    res.render('review', {
+      reviews,
+      recipeId,
+      userId: req.session.userId,
+      role: req.session.role
+    });
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -121,6 +144,45 @@ exports.getUpdatePage = async (req, res) => {
     const reviewId= req.query.reviewId;
     const reviewData = await Review.findById(reviewId);
     res.render("edit-review", { review: reviewData });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.voteReview = async (req, res) => {
+  if (!req.session.userId) {
+    return res.send("You must be logged in.");
+  }
+
+  try {
+    const { reviewId, value } = req.body;
+    const userId = req.session.userId;
+
+    const review = await Review.findById(reviewId);
+
+    const existingVote = review.votes.find(
+      v => v.user.toString() === userId
+    );
+
+    if (existingVote) {
+      if (existingVote.value === Number(value)) {
+        // ✅ REMOVE vote (toggle off)
+        review.votes = review.votes.filter(
+          v => v.user.toString() !== userId
+        );
+      } else {
+        // 🔄 SWITCH vote
+        existingVote.value = Number(value);
+      }
+    } else {
+      // ➕ NEW vote
+      review.votes.push({ user: userId, value: Number(value) });
+    }
+
+    await review.save();
+
+    res.redirect('/reviews?recipeId=' + review.recipe);
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

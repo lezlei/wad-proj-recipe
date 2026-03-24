@@ -1,7 +1,6 @@
 <h2>Add Review</h2>
 
 <form action="/reviews" method="POST">
-
   <input type="hidden" name="recipeId" value="<%= recipeId %>">
 
   <div>
@@ -23,7 +22,6 @@
   <br><br>
 
   <a href="/recipes">Back to Recipes</a>
-
 </form>
 
 <hr>
@@ -36,11 +34,8 @@
       <th>User</th>
       <th>Rating</th>
       <th>Comment</th>
-      <% reviews.forEach(review => { %>
-        <% if (review.user && (review.user._id.toString() === String(userId) || role === "admin")) { %>
-          <th colspan="2">Actions</th>
-        <% } %>
-      <% }) %>
+      <th>Votes</th>
+      <th colspan="2">Actions</th>
     </tr>
   </thead>
 
@@ -48,39 +43,56 @@
 
     <% if (reviews.length === 0) { %>
       <tr>
-        <td colspan="4">No reviews yet.</td>
+        <td colspan="6">No reviews yet.</td>
       </tr>
     <% } else { %>
 
       <% reviews.forEach(review => { %>
-
         <tr>
           <td><%= review.user ? review.user.username : "User" %></td>
           <td><%= review.rating %></td>
           <td><%= review.comment %></td>
 
-          
-            <% if (review.user && (review.user._id.toString() === String(userId) || role === "admin")) { %>
-              <!-- UPDATE -->
-              <td>
-                <form action="/reviews/edit" method="GET" style="display:inline;">
-                  <input type="hidden" name="reviewId" value="<%= review._id %>">
-                  <button type="submit">Update</button>
-                </form>
-              </td>
-              <!-- DELETE -->
-              <td>
-                <form action="/reviews/delete" method="POST" style="display:inline;">
-                  <input type="hidden" name="reviewId" value="<%= review._id %>">
-                  <button type="submit">Delete</button>
-                </form>
-              </td>
-            <% } else { %> 
-              <td colspan="2">None</td>
-            <% } %>
-          
-        </tr>
+          <!-- ✅ VOTING (VISIBLE TO EVERYONE) -->
+          <td>
+            <form action="/reviews/vote" method="POST" style="display:inline;">
+              <input type="hidden" name="reviewId" value="<%= review._id %>">
+              <input type="hidden" name="value" value="1">
+              <button type="submit">👍</button>
+            </form>
 
+            <form action="/reviews/vote" method="POST" style="display:inline;">
+              <input type="hidden" name="reviewId" value="<%= review._id %>">
+              <input type="hidden" name="value" value="-1">
+              <button type="submit">👎</button>
+            </form>
+
+            <br>
+
+            👍 <%= (review.votes || []).filter(v => v.value === 1).length %>
+            👎 <%= (review.votes || []).filter(v => v.value === -1).length %>
+          </td>
+
+          <!-- ✅ ONLY OWNER / ADMIN CAN EDIT -->
+          <% if (review.user && (review.user._id.toString() === String(userId) || role === "admin")) { %>
+            <td>
+              <form action="/reviews/edit" method="GET">
+                <input type="hidden" name="reviewId" value="<%= review._id %>">
+                <button type="submit">Update</button>
+              </form>
+            </td>
+
+            <td>
+              <form action="/reviews/delete" method="POST">
+                <input type="hidden" name="reviewId" value="<%= review._id %>">
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          <% } else { %>
+            <td colspan="2">None</td>
+          <% } %>
+
+        </tr>
       <% }) %>
 
     <% } %>
