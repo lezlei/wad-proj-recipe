@@ -16,6 +16,7 @@ router.get("/edit", reviewController.getUpdatePage);
 router.post("/delete", reviewController.deleteReview);
 //update reviews
 router.post("/vote", reviewController.voteReview);
-
+//delete review
+router.post("/delete-all", reviewController.deleteAllReviews);
 
 module.exports = router;

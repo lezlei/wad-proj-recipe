@@ -108,12 +108,11 @@ exports.deleteReview = async (req, res) => {
 exports.getReviewsPage = async (req, res) => {
   try {
     const recipeId = req.query.recipeId || '';
+    const deleted = req.query.deleted || false; 
 
-    // Fetch reviews
     let reviews = await Review.find({ recipe: recipeId })
       .populate("user");
 
-    // Sort by number of upvotes (descending)
     reviews.sort((a, b) => {
       const scoreA =
         (a.votes || []).filter(v => v.value === 1).length -
@@ -125,12 +124,13 @@ exports.getReviewsPage = async (req, res) => {
 
       return scoreB - scoreA;
     });
-    
+
     res.render('review', {
       reviews,
       recipeId,
       userId: req.session.userId,
-      role: req.session.role
+      role: req.session.role,
+      deleted // ✅ PASS TO VIEW
     });
 
   } catch (error) {
@@ -148,7 +148,7 @@ exports.getUpdatePage = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
+// Vote a review
 exports.voteReview = async (req, res) => {
   if (!req.session.userId) {
     return res.send("You must be logged in.");
@@ -182,6 +182,30 @@ exports.voteReview = async (req, res) => {
     await review.save();
 
     res.redirect('/reviews?recipeId=' + review.recipe);
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+// Delete all reviews
+exports.deleteAllReviews = async (req, res) => {
+  if (!req.session.userId || req.session.role !== "admin") {
+    return res.send("Unauthorized");
+  }
+
+  try {
+    const recipeId = req.body.recipeId;
+
+    // Delete all reviews for this recipe
+    await Review.deleteMany({ recipe: recipeId });
+
+    // Reset recipe stats
+    await Recipe.findByIdAndUpdate(recipeId, {
+      reviewCount: 0,
+      avgScore: 0
+    });
+
+    res.redirect('/reviews?recipeId=' + recipeId + '&deleted=true');
 
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -27,7 +27,18 @@
 <hr>
 
 <h2>Reviews</h2>
-
+<% if (role === "admin" && reviews.length > 0) { %>
+  <form action="/reviews/delete-all" method="POST" onsubmit="return confirm('Are you sure you want to delete ALL reviews?');">
+    <input type="hidden" name="recipeId" value="<%= recipeId %>">
+    <button type="submit" style="background-color:red; color:white;">
+      Delete All Reviews
+    </button>
+  </form>
+  <br>
+<% } %>
+<% if (deleted) { %>
+  <p style="color:green;">All reviews deleted successfully.</p>
+<% } %>
 <table border="1">
   <thead>
     <tr>
@@ -91,7 +102,6 @@
           <% } else { %>
             <td colspan="2">None</td>
           <% } %>
-
         </tr>
       <% }) %>
 
