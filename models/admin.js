@@ -31,3 +31,18 @@ exports.SuspendUser = async function (userId) {
         console.error(error)
     }
 }
+
+exports.DeleteUser = async function (userId) {
+    try {
+        let user = await User.findById(userId)
+
+        if (!user) {
+            return false
+        }
+
+        const result = await User.deleteOne({ _id: userId})
+        return result.modifiedCount > 0
+    } catch (error) {
+        console.error(error)
+    }
+}

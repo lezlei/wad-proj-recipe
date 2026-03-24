@@ -8,4 +8,6 @@ router.post('/update-role',adminController.updateRole)
 
 router.post('/toggle-suspend',adminController.toggleSuspend)
 
+router.post('/delete',adminController.delete)
+
 module.exports = router;
