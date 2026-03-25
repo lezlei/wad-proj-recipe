@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require('../models/User');
 
 // Recipe Schema
 const recipeSchema = new mongoose.Schema({
@@ -82,9 +83,15 @@ Recipe.deleteRecipe = function(recipeId, authorId) {
 
 // Function to get a random recipe from the database
 Recipe.getRandom = async function(userId, seenIds = []){
+
+    const person = await User.findById(userId);   
+    const favourites = person ? person.favourites : [];
+
+    const excludeIds = [...new Set([...seenIds, ...favourites])];
+
     const query = {
     authorID: { $ne: userId },      
-    _id: { $nin: seenIds }                 
+    _id: { $nin: excludeIds }                 
   };
 
   const count = await Recipe.countDocuments(query);
