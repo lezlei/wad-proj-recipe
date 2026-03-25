@@ -1,6 +1,6 @@
 <% if (message) { %>
 
-  <div style="text-align: center; max-width: 500px; margin: 0 auto;">
+  <div>
     <p><%= message %></p>
 
     <a href="/recipes/recommendation">Start Again</a> <br><br>
@@ -10,7 +10,7 @@
 
 <% } else if (randomRecipe) { %>  
   
-  <div style="text-align: center; max-width: 500px; margin: 0 auto;">
+  <div>
     <h2><u><%= randomRecipe.title %></u></h2>
 
     <strong>Cuisine</strong> <br>
@@ -21,7 +21,7 @@
 
     <strong>Ingredients</strong> <br>
 
-    <ul style="display: inline-block; text-align: left;">
+    <ul>
       <% randomRecipe.ingredients.forEach(ing => { %>
         <li><%= ing %></li>
       <% }) %>
@@ -30,7 +30,7 @@
     <br>
 
     <strong>Instructions</strong> <br>
-    <ol style="display: inline-block; text-align: left;">
+    <ol>
       <% randomRecipe.instructions.forEach(ins => { %>
         <li><%= ins %></li>
       <% }) %>
