@@ -22,8 +22,8 @@
         <label>Update Ingredients (one per line)</label><br>
         <textarea name="ingredients" required><%= recipe.ingredients.join('\n') %></textarea><br><br>
 
-        <label>Update Instructions</label><br>
-        <textarea name="instructions" required><%= recipe.instructions %></textarea><br><br>
+        <label>Update Instructions (one per line)</label><br>
+        <textarea name="instructions" required><%= recipe.instructions.join('\n') %></textarea><br><br>
 
         <button type="submit">Save Changes</button>
     </form>
