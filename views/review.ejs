@@ -27,6 +27,7 @@
 <hr>
 
 <h2>Reviews</h2>
+
 <% if (role === "admin" && reviews.length > 0) { %>
   <form action="/reviews/delete-all" method="POST" onsubmit="return confirm('Are you sure you want to delete ALL reviews?');">
     <input type="hidden" name="recipeId" value="<%= recipeId %>">
@@ -36,9 +37,11 @@
   </form>
   <br>
 <% } %>
+
 <% if (deleted) { %>
   <p style="color:green;">All reviews deleted successfully.</p>
 <% } %>
+
 <table border="1">
   <thead>
     <tr>
@@ -47,6 +50,7 @@
       <th>Comment</th>
       <th>Votes</th>
       <th colspan="2">Actions</th>
+      <th>Replies</th> <!-- ✅ NEW COLUMN -->
     </tr>
   </thead>
 
@@ -54,17 +58,19 @@
 
     <% if (reviews.length === 0) { %>
       <tr>
-        <td colspan="6">No reviews yet.</td>
+        <td colspan="7">No reviews yet.</td>
       </tr>
     <% } else { %>
 
       <% reviews.forEach(review => { %>
+
+        <!-- MAIN REVIEW ROW -->
         <tr>
           <td><%= review.user ? review.user.username : "User" %></td>
           <td><%= review.rating %></td>
           <td><%= review.comment %></td>
 
-          <!-- ✅ VOTING (VISIBLE TO EVERYONE) -->
+          <!-- VOTES -->
           <td>
             <form action="/reviews/vote" method="POST" style="display:inline;">
               <input type="hidden" name="reviewId" value="<%= review._id %>">
@@ -84,7 +90,7 @@
             👎 <%= (review.votes || []).filter(v => v.value === -1).length %>
           </td>
 
-          <!-- ✅ ONLY OWNER / ADMIN CAN EDIT -->
+          <!-- ACTIONS -->
           <% if (review.user && (review.user._id.toString() === String(userId) || role === "admin")) { %>
             <td>
               <form action="/reviews/edit" method="GET">
@@ -102,10 +108,65 @@
           <% } else { %>
             <td colspan="2">None</td>
           <% } %>
+
+          <!-- ✅ REPLIES BUTTON -->
+          <td>
+            <button type="button" onclick="toggleReplies('<%= review._id %>')">
+              Replies (<%= (review.replies || []).length %>)
+            </button>
+          </td>
         </tr>
+
+        <!-- ✅ HIDDEN REPLIES ROW -->
+        <tr id="replies-<%= review._id %>" style="display:none;">
+          <td colspan="7">
+
+            <% if (!review.replies || review.replies.length === 0) { %>
+              <p>No replies yet.</p>
+            <% } else { %>
+
+              <% review.replies.forEach(reply => { %>
+                <div style="margin-left:20px; border-left:2px solid #ccc; padding-left:10px; margin-bottom:10px;">
+                  
+                  <strong><%= reply.user ? reply.user.username : "User" %></strong><br>
+                  <small><%= new Date(reply.createdAt).toLocaleString() %></small>
+                  <p><%= reply.comment %></p>
+
+                  <!-- ✅ DELETE REPLY BUTTON -->
+                  <% if (reply.user && (reply.user._id.toString() === String(userId) || role === "admin")) { %>
+                    <form action="/reviews/reply/delete" method="POST" style="display:inline;">
+                      <input type="hidden" name="reviewId" value="<%= review._id %>">
+                      <input type="hidden" name="replyId" value="<%= reply._id %>">
+                      <button type="submit">Delete Reply</button>
+                    </form>
+                  <% } %>
+                </div>
+              <% }) %>
+            <% } %>
+
+            <!-- ✅ REPLY FORM -->
+            <% if (userId) { %>
+              <form action="/reviews/reply" method="POST">
+                <input type="hidden" name="reviewId" value="<%= review._id %>">
+                <input type="text" name="comment" placeholder="Write a reply..." required>
+                <button type="submit">Reply</button>
+              </form>
+            <% } %>
+
+          </td>
+        </tr>
+
       <% }) %>
 
     <% } %>
 
   </tbody>
 </table>
+
+<!-- ✅ TOGGLE SCRIPT -->
+<script>
+function toggleReplies(id) {
+  const row = document.getElementById("replies-" + id);
+  row.style.display = row.style.display === "none" ? "table-row" : "none";
+}
+</script>

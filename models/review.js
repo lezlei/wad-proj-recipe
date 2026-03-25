@@ -28,7 +28,14 @@ const reviewSchema = new mongoose.Schema({
         value: { type: Number, enum: [1, -1] }
         }],
     default: []
-    }},
+    },
+    replies: [
+    {
+        user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+        comment: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now }
+    }
+    ]},
     { timestamps: true});
 
 module.exports=mongoose.model("Review",reviewSchema);

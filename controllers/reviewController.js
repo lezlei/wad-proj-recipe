@@ -111,7 +111,8 @@ exports.getReviewsPage = async (req, res) => {
     const deleted = req.query.deleted || false; 
 
     let reviews = await Review.find({ recipe: recipeId })
-      .populate("user");
+    .populate("user")
+    .populate("replies.user"); 
 
     reviews.sort((a, b) => {
       const scoreA =
@@ -206,6 +207,62 @@ exports.deleteAllReviews = async (req, res) => {
     });
 
     res.redirect('/reviews?recipeId=' + recipeId + '&deleted=true');
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+// Create a tread review
+exports.addReply = async (req, res) => {
+  if (!req.session.userId) return res.send("You must be logged in.");
+
+  try {
+    const { reviewId, comment } = req.body;
+    const userId = req.session.userId;
+
+    const review = await Review.findById(reviewId);
+    if (!review) return res.send("Review not found.");
+
+    review.replies.push({
+      user: userId,
+      comment
+    });
+
+    await review.save();
+
+    res.redirect('/reviews?recipeId=' + review.recipe);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+// Delete replies
+exports.deleteReply = async (req, res) => {
+  if (!req.session.userId) return res.send("You must be logged in.");
+
+  try {
+    const { reviewId, replyId } = req.body;
+    const userId = req.session.userId;
+    const userRole = req.session.role;
+
+    const review = await Review.findById(reviewId);
+    if (!review) return res.send("Review not found.");
+
+    const reply = review.replies.id(replyId);
+    if (!reply) return res.send("Reply not found.");
+
+    // ✅ Authorization (owner or admin)
+    if (reply.user.toString() !== userId && userRole !== "admin") {
+      return res.send("Unauthorized");
+    }
+
+    // ✅ Remove reply
+    review.replies = review.replies.filter(
+      r => r._id.toString() !== replyId
+    );
+
+    await review.save();
+
+    res.redirect('/reviews?recipeId=' + review.recipe);
 
   } catch (error) {
     res.status(500).json({ error: error.message });

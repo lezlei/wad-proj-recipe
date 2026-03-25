@@ -18,5 +18,9 @@ router.post("/delete", reviewController.deleteReview);
 router.post("/vote", reviewController.voteReview);
 //delete review
 router.post("/delete-all", reviewController.deleteAllReviews);
+//create tread review
+router.post("/reply", reviewController.addReply);
+//delete replies
+router.post("/reply/delete", reviewController.deleteReply);
 
 module.exports = router;
