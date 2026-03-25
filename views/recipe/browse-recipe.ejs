@@ -56,7 +56,13 @@
             </ul>
           </td>
 
-          <td><%= recipe.instructions %></td>
+          <td>
+            <ol>
+              <% recipe.instructions.forEach(ins => { %>
+                <li><%= ins %></li>
+              <% }) %>
+            </ol>
+          </td>
 
           <td>
             <a href="/reviews?recipeId=<%= recipe._id %>">View Reviews</a> <br>
@@ -139,7 +145,13 @@
             </ul>
           </td>
 
-          <td><%= recipe.instructions %></td>
+          <td>
+            <ol>
+              <% recipe.instructions.forEach(ins => { %>
+                <li><%= ins %></li>
+              <% }) %>
+            </ol>
+          </td>
 
           <td><%= recipe.authorID ? recipe.authorID.username : 'Unknown' %></td>
 
@@ -235,7 +247,13 @@
             </ul>
           </td>
 
-          <td><%= recipe.instructions %></td>
+          <td>
+            <ol>
+              <% recipe.instructions.forEach(ins => { %>
+                <li><%= ins %></li>
+              <% }) %>
+            </ol>
+          </td>
 
           <td><%= recipe.authorID ? recipe.authorID.username : 'Unknown' %></td>
           

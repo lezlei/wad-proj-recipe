@@ -24,7 +24,11 @@
 
 
   <strong>Instructions</strong> <br>
-  <%= randomRecipe.instructions %> <br><br>
+  <ol>
+    <% randomRecipe.instructions.forEach(ins => { %>
+    <li><%= ins %></li>
+    <% }) %>
+  </ol>
 
   Avg Rating: <%= randomRecipe.avgScore.toFixed(2) %> / 5 
 

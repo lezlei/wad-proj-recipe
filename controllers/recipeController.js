@@ -82,13 +82,14 @@ exports.createPost = async (req,res) => {
         }
 
         const ingredientsArray = ingredients.split('\n').filter(line => line.trim() !== '');
+        const instructionsArray = instructions.split('\n').filter(line => line.trim() !== '');
 
         const newRecipe = {
             title : title,
             cuisine : cuisine,
             description : description,
             ingredients : ingredientsArray,
-            instructions : instructions,
+            instructions : instructionsArray,
             authorID : currentUserID
         }
 
@@ -154,13 +155,14 @@ exports.updatePost = async (req,res)=>{
         const user = await User.findById(currentUserID);
 
         const ingredientsArray = ingredients.split('\n').filter(line => line.trim() !== '');
+        const instructionsArray = instructions.split('\n').filter(line => line.trim() !== '');
 
         const updatedRecipe = {
             title : title,
             cuisine : cuisine,
             description : description,
             ingredients : ingredientsArray,
-            instructions : instructions,
+            instructions : instructionsArray,
         };
 
         let updateCheck;
