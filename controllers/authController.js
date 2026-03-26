@@ -29,6 +29,9 @@ exports.postLogin = async (req, res) => {
         if (!user) return res.send("Invalid username or password.");
 
         const isMatch = await bcrypt.compare(password, user.password);
+        if (user && user.isSuspended === true) {
+            res.send("Your account has been suspended!")
+        }
         if (isMatch) {
             req.session.userId = user._id;
             req.session.username = user.username;
@@ -37,6 +40,7 @@ exports.postLogin = async (req, res) => {
         } else {
             res.send("Invalid username or password.");
         }
+        
     } catch (err) {
         console.log(err);
         res.send("Error during login.");
