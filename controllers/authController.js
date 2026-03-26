@@ -45,8 +45,6 @@ exports.postLogin = async (req, res) => {
 
 exports.getProfile = async (req, res) => {
     try {
-        if (!req.session.userId) return res.redirect('/auth/login');
-        
         const user = await User.findById(req.session.userId);
         if (!user) return res.send("User not found");
         
