@@ -75,7 +75,7 @@ exports.addFavourite = async (req,res) => {
             req.session.favmessage = 'Added to favourites!'
         };
 
-        res.redirect('/recipes/recommendation');
+        res.redirect(req.get('referer') || '/recipes');
     
     } catch (err) {
         console.log("Error:", err);
@@ -91,4 +91,29 @@ exports.displayNextReco = async (req,res) => {
         console.log("Error:", err);
         res.send('Failed to get next recommendation.');
     };
+};
+
+exports.removeFavourite = async (req, res) => {
+    try {
+        const currentUserID = req.session.userId;
+        const recipeID = req.params.recipeId;
+
+        if (!currentUserID) {
+            return res.redirect('/auth/login');
+        }
+
+        // Use $pull to remove the recipeID from the favourites array
+        await User.findByIdAndUpdate(currentUserID, {
+            $pull: { favourites: recipeID }
+        });
+
+        console.log(`User ${currentUserID} removed recipe ${recipeID} from favourites.`);
+        
+        // Redirect back to the recipes browse page
+        res.redirect('/recipes');
+        
+    } catch (err) {
+        console.log("Error:", err);
+        res.send('Failed to remove from favourites.');
+    }
 };

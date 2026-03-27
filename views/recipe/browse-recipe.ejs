@@ -263,6 +263,10 @@
             Avg Rating: <%= recipe.avgScore.toFixed(2) %> / 5
             <br>
             Reviews: <%= recipe.reviewCount %>
+            <br><br>
+            <form action="/favourites/<%= recipe._id %>/add" method="POST" style="display:inline;">
+              <button type="submit">Add to Favourites</button>
+            </form>
           </td>
           
           <% if (user && user.role === 'admin') { %>

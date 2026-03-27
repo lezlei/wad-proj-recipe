@@ -25,6 +25,9 @@ router.post('/favourites/:recipeId/add', rngController.addFavourite);
 // GET Form for next recommendation
 router.get('/recipes/recommendation/next', rngController.displayNextReco);
 
+// POST Form for removing from favourites
+router.post('/favourites/:recipeId/delete', rngController.removeFavourite);
+
 
 
 // DYNAMIC routes to update/delete recipe
