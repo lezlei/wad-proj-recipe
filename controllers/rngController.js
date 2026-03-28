@@ -75,7 +75,7 @@ exports.addFavourite = async (req,res) => {
             req.session.favmessage = 'Added to favourites!'
         };
 
-        res.redirect(req.get('referer') || '/recipes');
+        res.redirect('/recipes/recommendation');
     
     } catch (err) {
         console.log("Error:", err);
@@ -92,6 +92,16 @@ exports.displayNextReco = async (req,res) => {
         res.send('Failed to get next recommendation.');
     };
 };
+
+exports.clearReco = async (req,res) => {
+    try {
+        req.session.currentRecipeId = null;
+        res.redirect('/recipes')
+    } catch (err) {
+        console.log("Error:", err);
+        res.send('Failed to clear recommendation.');
+    };
+}
 
 exports.removeFavourite = async (req, res) => {
     try {

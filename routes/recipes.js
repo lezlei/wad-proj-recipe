@@ -25,6 +25,9 @@ router.post('/favourites/:recipeId/add', rngController.addFavourite);
 // GET Form for next recommendation
 router.get('/recipes/recommendation/next', rngController.displayNextReco);
 
+// GET Form to clear recommendation when user returns to main recipes page
+router.get('/recommendation/clear', rngController.clearReco);
+
 // POST Form for removing from favourites
 router.post('/favourites/:recipeId/delete', rngController.removeFavourite);
 
