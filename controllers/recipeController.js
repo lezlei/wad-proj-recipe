@@ -52,13 +52,6 @@ exports.displayRecipes = async (req, res) => {
         _id: { $nin: favRecipes.map(r => r._id) }
       }).limit(5).populate('authorID');
     } 
-    
-    if (recommendedRecipes.length === 0) {
-      recommendedRecipes = await Recipe.find({
-        authorID: { $ne: currentUserID },
-        _id: { $nin: favRecipes.map(r => r._id) }
-      }).sort({ avgScore: -1 }).limit(5).populate('authorID');
-    }
 
     res.render('recipe/browse-recipe', {
       myRecipes: userRecipes,

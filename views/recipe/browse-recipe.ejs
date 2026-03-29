@@ -308,9 +308,18 @@
             <br>
             Reviews: <%= recipe.reviewCount %>
             <br><br>
-            <form action="/recipes/<%= recipe._id %>/favourite" method="POST" style="display:inline;">
-              <button type="submit">Add to Favourites</button>
-            </form>
+
+            <% 
+              const isFavourited = favRecipes.some(fav => String(fav._id) === String(recipe._id)); 
+            %>
+
+            <% if (recipe.authorID && user && String(recipe.authorID._id) !== String(user._id) && !isFavourited) { %>
+              <form action="/recipes/<%= recipe._id %>/favourite" method="POST" style="display:inline;">
+                <button type="submit">Add to Favourites</button>
+              </form>
+            <% } else if (isFavourited) { %>
+              Favourited ★
+            <% } %>
           </td>
           
           <% if (user && user.role === 'admin') { %>
