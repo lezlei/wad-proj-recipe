@@ -34,6 +34,12 @@ router.get('/recommendation/clear', rngController.clearReco);
 // POST Form for removing from favourites
 router.post('/favourites/:recipeId/delete', rngController.removeFavourite);
 
+// GET Form for retrieving one of the Top 3 Rated Recipe
+router.get('/recipes/:topRatedId', recipeController.viewTopRated);
+
+// POST Form to add favourite when user in Top Rated Recipe Page
+router.post('/recipes/:topRatedId/add', recipeController.addFavouriteFromTopRated);
+
 
 
 // DYNAMIC routes to update/delete recipe

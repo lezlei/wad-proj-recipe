@@ -53,11 +53,15 @@ exports.displayRecipes = async (req, res) => {
       }).limit(5).populate('authorID');
     } 
 
+    // Retrieves Top 3 Trending Recipes
+    let topRated = await Recipe.getTrending();
+
     res.render('recipe/browse-recipe', {
       myRecipes: userRecipes,
       favRecipes: favRecipes,
       allRecipes: allRecipes,
       recommendedRecipes: recommendedRecipes,
+      topRated: topRated,
       user: user,
       search,
       filter
@@ -265,3 +269,58 @@ exports.addFavouriteFromBrowse = async (req, res) => {
         res.redirect('/recipes');
     }
 };
+
+// Logic to GET one of the top rated recipes from browse page
+exports.viewTopRated = async (req,res) => {
+    try {
+        const currentUserID = req.session.userId;
+
+        if (!currentUserID) {
+            return res.redirect('/auth/login');
+        }
+
+        const recipeId = req.params.topRatedId;
+        req.session.recipeId = recipeId;
+
+        const randomRecipe = await Recipe.findById(recipeId);
+        
+        const favmessage = req.session.favmessage;
+        req.session.favmessage = null;
+
+        res.render('recipe/topRated-recipe', {randomRecipe, favmessage})
+
+    } catch (err){
+        console.error("Error retrieving top rated recipe.", err);
+    }
+};
+
+// Logic for POST to add a recipe to favourites from the topRated page
+exports.addFavouriteFromTopRated = async (req, res) => {
+    try {
+        const currentUserID = req.session.userId;
+        const recipeID = req.session.recipeId;
+
+        if (!currentUserID) {
+            return res.redirect('/auth/login');
+        }
+
+        const user = await User.findById(currentUserID);
+        const alreadyFavourited = user.favourites.includes(recipeID);
+
+        if (alreadyFavourited){
+            req.session.favmessage = 'Already added to favourites!'
+        } else {
+            await User.findByIdAndUpdate(currentUserID, {
+                $addToSet : { favourites : recipeID }
+            });
+
+            req.session.favmessage = 'Added to favourites!'
+        };
+
+        res.redirect(`/recipes/${recipeID}`);
+        
+    } catch (error) {
+        console.error("Error adding to favourites:", error);
+        res.redirect('/recipes');
+    }
+};  

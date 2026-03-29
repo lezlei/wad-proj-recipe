@@ -101,6 +101,15 @@ Recipe.getRandom = async function(userId, seenIds = []){
 
   return Recipe.findOne(query).skip(skip).populate('authorID');
 };
+
+
+// Function to get the top three recipe that have the highest reviews
+Recipe.getTrending = async function() {
+
+    const topRated = await Recipe.find().sort({ avgScore : -1, reviewCount : -1}).limit(3);
+    return topRated;
     
+};
+
 // Export the model (with helpers attached)
 module.exports = Recipe;
