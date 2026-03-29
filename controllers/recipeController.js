@@ -40,10 +40,31 @@ exports.displayRecipes = async (req, res) => {
         allRecipes = await Recipe.searchByCuisine(search);
     }   
 
+    // Logic for More recipes you may like
+    let recommendedRecipes = [];
+    
+    if (favRecipes.length > 0) {
+      const favCuisines = favRecipes.map(recipe => recipe.cuisine);
+      
+      recommendedRecipes = await Recipe.find({
+        cuisine: { $in: favCuisines },
+        authorID: { $ne: currentUserID },
+        _id: { $nin: favRecipes.map(r => r._id) }
+      }).limit(5).populate('authorID');
+    } 
+    
+    if (recommendedRecipes.length === 0) {
+      recommendedRecipes = await Recipe.find({
+        authorID: { $ne: currentUserID },
+        _id: { $nin: favRecipes.map(r => r._id) }
+      }).sort({ avgScore: -1 }).limit(5).populate('authorID');
+    }
+
     res.render('recipe/browse-recipe', {
       myRecipes: userRecipes,
       favRecipes: favRecipes,
       allRecipes: allRecipes,
+      recommendedRecipes: recommendedRecipes,
       user: user,
       search,
       filter
@@ -228,7 +249,6 @@ exports.addFavouriteFromBrowse = async (req, res) => {
         const currentUserID = req.session.userId;
         const recipeID = req.params.recipeId;
 
-        // Check if user is logged in
         if (!currentUserID) {
             return res.redirect('/auth/login');
         }
@@ -236,7 +256,6 @@ exports.addFavouriteFromBrowse = async (req, res) => {
         const user = await User.findById(currentUserID);
         const alreadyFavourited = user.favourites.includes(recipeID);
 
-        // Add to favourites if not already there
         if (!alreadyFavourited) {
             await User.findByIdAndUpdate(currentUserID, {
                 $addToSet: { favourites: recipeID }
@@ -246,7 +265,6 @@ exports.addFavouriteFromBrowse = async (req, res) => {
             console.log(`Recipe already in favourites!`);
         }
 
-        // Redirect back to the browse recipes page
         res.redirect('/recipes');
         
     } catch (error) {

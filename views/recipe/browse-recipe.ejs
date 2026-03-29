@@ -183,6 +183,50 @@
 
 <hr>
 
+<h2>More Recipes You May Like</h2>
+<p><em>Based on your favourites and top-rated dishes!</em></p>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Cuisine</th>
+      <th>Description</th>
+      <th>Author</th>
+      <th>Reviews</th>
+      <th colspan="1">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (recommendedRecipes.length === 0) { %>
+      <tr>
+        <td colspan="6">No recommendations available at the moment. Add more favourites!</td>
+      </tr>
+    <% } else { %>
+      <% recommendedRecipes.forEach(recipe => { %>
+        <tr>
+          <td><%= recipe.title %></td>
+          <td><%= recipe.cuisine %></td>
+          <td><%= recipe.description %></td>
+          <td><%= recipe.authorID ? recipe.authorID.username : 'Unknown' %></td>
+          <td>
+            <a href="/reviews?recipeId=<%= recipe._id %>">View Reviews</a><br>
+            Avg Rating: <%= recipe.avgScore ? recipe.avgScore.toFixed(2) : '0.00' %> / 5<br>
+            Reviews: <%= recipe.reviewCount %>
+          </td>
+          <td>
+            <form action="/recipes/<%= recipe._id %>/favourite" method="POST" style="display:inline;">
+              <button type="submit">Add to Favourites</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    <% } %>
+  </tbody>
+</table>
+
+<hr>
+
 <h2>All Recipes</h2>
 
 <form action="/recipes" method="get">
