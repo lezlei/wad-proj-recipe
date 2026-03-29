@@ -22,6 +22,9 @@ router.get('/recipes/recommendation', rngController.displayReco);
 // POST Form for adding to favourites
 router.post('/favourites/:recipeId/add', rngController.addFavourite);
 
+// POST Form to add a recipe to favourites from the browse page
+router.post('/recipes/:recipeId/favourite', recipeController.addFavouriteFromBrowse);
+
 // GET Form for next recommendation
 router.get('/recipes/recommendation/next', rngController.displayNextReco);
 

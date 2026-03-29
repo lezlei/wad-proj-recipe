@@ -163,7 +163,7 @@
 
           <td>
             <form action="/favourites/<%= recipe._id %>/delete" method="POST" style="display:inline;" >
-              <button type="submit" onclick="return confirm('Are you sure you want to delete this recipe from favourites?');">Delete</button>
+              <button type="submit" onclick="return confirm('Are you sure you want to remove this recipe from favourites?');">Remove</button>
             </form>
           </td>
 
@@ -264,7 +264,7 @@
             <br>
             Reviews: <%= recipe.reviewCount %>
             <br><br>
-            <form action="/favourites/<%= recipe._id %>/add" method="POST" style="display:inline;">
+            <form action="/recipes/<%= recipe._id %>/favourite" method="POST" style="display:inline;">
               <button type="submit">Add to Favourites</button>
             </form>
           </td>

@@ -221,3 +221,36 @@ exports.deletePost = async (req, res) => {
         res.redirect('/recipes');
     }
 };
+
+// Logic for POST to add a recipe to favourites from the browse page
+exports.addFavouriteFromBrowse = async (req, res) => {
+    try {
+        const currentUserID = req.session.userId;
+        const recipeID = req.params.recipeId;
+
+        // Check if user is logged in
+        if (!currentUserID) {
+            return res.redirect('/auth/login');
+        }
+
+        const user = await User.findById(currentUserID);
+        const alreadyFavourited = user.favourites.includes(recipeID);
+
+        // Add to favourites if not already there
+        if (!alreadyFavourited) {
+            await User.findByIdAndUpdate(currentUserID, {
+                $addToSet: { favourites: recipeID }
+            });
+            console.log(`Recipe added to favourites from browse page!`);
+        } else {
+            console.log(`Recipe already in favourites!`);
+        }
+
+        // Redirect back to the browse recipes page
+        res.redirect('/recipes');
+        
+    } catch (error) {
+        console.error("Error adding to favourites:", error);
+        res.redirect('/recipes');
+    }
+};
