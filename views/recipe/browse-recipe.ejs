@@ -1,11 +1,21 @@
 
-<nav style="position: sticky; top: 0; background: white; padding: 10px; border-bottom: 1px solid #ccc;" align="center">
-  <a href="#my-recipes">My Recipes</a> |
-  <a href="#my-favourites">My Favourites</a> |
-  <a href="#more-recipes">More Recipes You May Like</a> |
-  <a href="#top-rated">Top Rated Recipes</a> |
-  <a href="#all-recipes">All Recipes</a>
-</nav> <br>
+<nav style="position: sticky; top: 0; background: white; padding: 10px 20px; border-bottom: 1px solid #ccc; z-index: 1000; display: flex; align-items: center; justify-content: space-between;">
+  
+  <div style="flex: 1;">
+    <a href="/">Back to Home</a>
+  </div>
+
+  <div style="flex: 2; text-align: center;">
+    <a href="#my-recipes" >My Recipes</a> |
+    <a href="#my-favourites">My Favourites</a> |
+    <a href="#more-recipes">More Recipes You May Like</a> |
+    <a href="#top-rated">Top Rated Recipes</a> |
+    <a href="#all-recipes">All Recipes</a>
+  </div>
+
+  <div style="flex: 1;"></div>
+</nav>
+<br>
 
 <% if (banner && banner.isActive) { %>
     <div style="background: yellow; padding: 1px; text-align: center;">
@@ -104,6 +114,11 @@
     <% } %>
   </tbody>
 </table>
+
+<br>
+
+<a href="/recipes/create">+ Create New Recipe</a>
+
 </div>
 
 <div align='center'>
@@ -195,13 +210,6 @@
   </tbody>
 </table>
 
-<br>
-
-<a href="/recipes/create">+ Create New Recipe</a>
-
-<br><br>
-
-<a href="/">Back to Home</a>
 </div>
 
 

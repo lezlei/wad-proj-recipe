@@ -57,6 +57,7 @@ exports.displayRecipes = async (req, res) => {
     // Retrieves Top 3 Trending Recipes
     let topRated = await Recipe.getTrending();
 
+    // Retrieves Banner Announcement Text
     const banner = await Announcement.findOne();
 
     res.render('recipe/browse-recipe', {
