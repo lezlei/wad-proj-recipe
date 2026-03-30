@@ -49,8 +49,9 @@
                 </td>
 
                 <td>
+                    <% let action = user.isSuspended ? 'unban' : 'ban'; %>
                     <form action="/auth/toggle-suspend" method="POST"
-                          onsubmit="return confirm('Are you sure you want to <%= user.isSuspended ? 'unban' : 'ban' %> this user?');">
+                          onsubmit="return confirm('Are you sure you want to <%= action %> this user?');">
                         <input type="hidden" name="id" value="<%= user._id %>">
                         
                         <% if (user.isSuspended) { %>
