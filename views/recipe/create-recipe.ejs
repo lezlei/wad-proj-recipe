@@ -6,7 +6,14 @@
   <input type="text" name="title" required><br><br>
 
   <label>Cusine</label><br>
-  <input type="text" name="cuisine" required><br><br>  
+  <input list="cuisine-options" name="cuisine" required>
+  <datalist id="cuisine-options">
+    <option value="American">American</option>
+    <option value="Chinese">Chinese</option>
+    <option value="Italian">Italian</option>
+    <option value="Mexican">Mexican</option>
+    <option value="Japanese">Japanese</option>
+  </datalist><br><br>
 
   <label>Description</label><br>
   <textarea name="description" required></textarea><br><br>
