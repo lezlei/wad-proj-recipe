@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const auth = require('../middleware/auth-middleware');
 
 const reviewController = require("../controllers/reviewController");
 
@@ -8,7 +9,7 @@ const reviewController = require("../controllers/reviewController");
 //show reviews
 router.get("/", reviewController.getReviewsPage);
 //create review
-router.post("/", reviewController.createReview);
+router.post("/", auth.isLoggedIn,reviewController.createReview);
 //update reviews
 router.post("/update",reviewController.updateReview);
 router.get("/edit", reviewController.getUpdatePage);

@@ -3,7 +3,6 @@ const Recipe = require("../models/Recipe");
 
 // Create a new review
 exports.createReview = async (req, res) => {
-  if (!req.session.userId) return res.send("You must be logged in.");
 
   try {
     const recipeId = req.body.recipeId;
