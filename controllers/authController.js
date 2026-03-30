@@ -43,7 +43,7 @@ exports.postLogin = async (req, res) => {
 
         // Check if user is suspended
         if (user.isSuspended === true) {
-            return res.render('auth/login', { error: "Your account has been suspended!" });
+            return res.render('auth/login', { error: "Your account has been banned!" });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
