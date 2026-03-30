@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Recipe = require('../models/Recipe');
+const Announcement = require('../models/Announcement');
 
 // Logic for GET browse-recipe to see user's recipes and everyone's recipe
 exports.displayRecipes = async (req, res) => {
@@ -56,6 +57,8 @@ exports.displayRecipes = async (req, res) => {
     // Retrieves Top 3 Trending Recipes
     let topRated = await Recipe.getTrending();
 
+    const banner = await Announcement.findOne();
+
     res.render('recipe/browse-recipe', {
       myRecipes: userRecipes,
       favRecipes: favRecipes,
@@ -64,7 +67,8 @@ exports.displayRecipes = async (req, res) => {
       topRated: topRated,
       user: user,
       search,
-      filter
+      filter,
+      banner
     });
 
   } catch (error) {

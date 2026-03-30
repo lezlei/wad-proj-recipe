@@ -1,10 +1,11 @@
 const admin = require('../models/admin')
 const User = require('../models/User')
+const Announcement = require('../models/Announcement');
 
 exports.loadDashboard = async (req,res) => {
     try {
         const allUsers = await admin.getAllUsers()
-        res.render("auth/admin",{users: allUsers})
+        res.render("auth/admin",{users: allUsers, message: null})
     } catch (error) {
         console.error(error)
     }
@@ -41,3 +42,25 @@ exports.delete = async (req,res) => {
         console.error(error)
     }
 }
+
+exports.postAnnouncement = async (req, res) => {
+    await Announcement.deleteMany({}); 
+    
+    await Announcement.create({ content: req.body.msg });
+
+    const message = "Announcement posted!"
+
+    const allUsers = await admin.getAllUsers()
+
+    res.render('auth/admin',{message, users: allUsers});
+};
+
+exports.deactivateBanner = async (req, res) => {
+    await Announcement.updateOne({}, { isActive: false });
+
+    const message = "Banner turned off!"
+
+    const allUsers = await admin.getAllUsers()
+
+    res.render('auth/admin',{message, users: allUsers});
+};

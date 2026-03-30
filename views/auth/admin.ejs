@@ -55,9 +55,9 @@
                         <input type="hidden" name="id" value="<%= user._id %>">
                         
                         <% if (user.isSuspended) { %>
-                            <button type="submit" class="btn-unban">Unban User</button>
+                            <button type="submit">Unban User</button>
                         <% } else { %>
-                            <button type="submit" class="btn-suspend">Ban User</button>
+                            <button type="submit">Ban User</button>
                         <% } %>
                     </form>
                 </td>
@@ -71,5 +71,22 @@
             </tr>
         <% } %>
     </table>
+
+    <p>
+        <h2>Post New System Announcement</h2>
+            <form action="/auth/announcement" method="POST">
+                <textarea rows="5" cols="50" name="msg" placeholder="Type your announcement here..." required></textarea><br>
+                <button type="submit">Publish to Site</button>
+            </form>
+            <form action="/auth/deactivate-banner" method="POST">
+                <button type="submit">Turn Off Banner</button>
+            </form>
+    </p>
+    <p>
+        <% if (message) { %>
+            <h3><%= message %></h3>
+        <% } %>
+    </p>
+
 </body>
 </html>

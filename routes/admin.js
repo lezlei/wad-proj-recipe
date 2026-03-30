@@ -10,4 +10,8 @@ router.post('/toggle-suspend',adminController.toggleSuspend)
 
 router.post('/delete',adminController.delete)
 
+router.post('/announcement',adminController.postAnnouncement)
+
+router.post('/deactivate-banner',adminController.deactivateBanner)
+
 module.exports = router;
