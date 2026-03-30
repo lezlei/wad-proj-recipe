@@ -95,7 +95,7 @@ exports.createGet = async (req,res) => {
 // Logic for POST create-recipe to submit form and redirect the user back to browse-recipe
 exports.createPost = async (req,res) => {
     try {
-        const {title, cuisine, description, ingredients, instructions} = req.body;
+        const {title, cuisine, description, common_ingredients, ingredients,  instructions} = req.body;
 
         const currentUserID = req.session.userId;
 
@@ -103,7 +103,16 @@ exports.createPost = async (req,res) => {
             return res.redirect('/auth/login')
         }
 
-        const ingredientsArray = ingredients.split('\n').filter(line => line.trim() !== '');
+        // Get array of ingredients that user input
+        let ingredientsArray = ingredients.split('\n').map(line => line.trim()).filter(line => line !== '');
+
+        // Check if user ticked box, combine ingredients ticked + ingredients input
+        if (common_ingredients) {
+            const checkedArray = Array.isArray(common_ingredients) ? common_ingredients : [common_ingredients];
+
+            ingredientsArray = [...checkedArray, ...ingredientsArray];
+        }
+
         const instructionsArray = instructions.split('\n').filter(line => line.trim() !== '');
 
         const newRecipe = {
