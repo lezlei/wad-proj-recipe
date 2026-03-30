@@ -3,6 +3,9 @@
 <head><title>Login</title></head>
 <body>
     <h1>Login</h1>
+    <% if (error) { %>
+        <p style="color: red; font-weight: bold;"><%= error %></p>
+    <% } %>
     <form action="/auth/login" method="POST">
         <div>
             <label>Username:</label>

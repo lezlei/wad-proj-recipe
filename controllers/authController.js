@@ -19,31 +19,58 @@ exports.postRegister = async (req, res) => {
 };
 
 exports.getLogin = (req, res) => {
-    res.render('auth/login');
+    res.render('auth/login', { error: null });
 };
 
 exports.postLogin = async (req, res) => {
     try {
         const { username, password } = req.body;
         const user = await User.findOne({ username: username });
-        if (!user) return res.send("Invalid username or password.");
+
+        // Username not found
+        if (!user) {
+            return res.render('auth/login', { error: "Username not found." });
+        }
+
+        if (!req.session.loginAttempts) {
+            req.session.loginAttempts = {};
+        }
+
+        // Check if max attempts reached
+        if (req.session.loginAttempts[username] >= 5) {
+            return res.render('auth/login', { error: "Maximum login attempts reached. Please reset your password through email." });
+        }
+
+        // Check if user is suspended
+        if (user.isSuspended === true) {
+            return res.render('auth/login', { error: "Your account has been suspended!" });
+        }
 
         const isMatch = await bcrypt.compare(password, user.password);
-        if (user && user.isSuspended === true) {
-            res.send("Your account has been suspended!")
-        }
+
         if (isMatch) {
+            delete req.session.loginAttempts[username];
             req.session.userId = user._id;
             req.session.username = user.username;
             req.session.role = user.role;
             res.redirect('/');
         } else {
-            res.send("Invalid username or password.");
+            // Wrong password -> increase attempt counter
+            req.session.loginAttempts[username] = (req.session.loginAttempts[username] || 0) + 1;
+            
+            if (req.session.loginAttempts[username] >= 5) {
+                return res.render('auth/login', { error: "Maximum login attempts reached. Please reset your password through email." });
+            }
+            
+            // Re-render the page and inject the attempts left
+            return res.render('auth/login', { 
+                error: `Incorrect password. Attempts left: ${5 - req.session.loginAttempts[username]}` 
+            });
         }
         
     } catch (err) {
         console.log(err);
-        res.send("Error during login.");
+        res.render('auth/login', { error: "Error during login." });
     }
 };
 
