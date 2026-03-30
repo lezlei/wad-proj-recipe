@@ -33,7 +33,7 @@
         <label>Update Description</label><br>
         <textarea name="description" required><%= data.description %></textarea><br><br>
 
-        <label>Common Ingredients</label><br>
+        <label>Update Common Ingredients</label><br>
         <% 
            // 1. Define the list of items that have checkboxes
            const commonList = ['Salt', 'Pepper', 'Olive Oil', 'Garlic', 'Onion'];
@@ -49,7 +49,7 @@
         <input type="checkbox" name="common_ingredients" value="Onion" <%= currentIngredients.includes('Onion') ? 'checked' : '' %>> Onion
         <br><br>
 
-        <label>Other Ingredients (one per line)</label><br>
+        <label>Update Other Ingredients (one per line)</label><br>
         <textarea name="ingredients"><% 
             // 3. Filter out the common items so they don't appear in the text box
             const otherIngredients = currentIngredients.filter(ing => !commonList.includes(ing));
