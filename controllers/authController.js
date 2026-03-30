@@ -38,7 +38,7 @@ exports.postLogin = async (req, res) => {
 
         // Check if max attempts reached
         if (req.session.loginAttempts[username] >= 5) {
-            return res.render('auth/login', { error: "Maximum login attempts reached. Please reset your password through email." });
+            return res.render('auth/login', { error: "Maximum login attempts reached. Please reset your password by contacting admin at luochuan@gmail.com" });
         }
 
         // Check if user is suspended
