@@ -4,32 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Recipe</title>
+    <style>
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        .error-box { color: red; font-weight: bold; margin-bottom: 15px; }
+    </style>
 </head>
+
 <body>
     <h1>Update Recipe: <%= recipe.title %></h1>
 
+    <% const data = oldData || recipe %>
+    
     <form method="POST" action="/recipes/<%= recipe._id %>/update">
         
         <label>Update Title</label><br>
-        <input type="text" name="title" value="<%= recipe.title %>" required><br><br>
+        <input type="text" name="title" value="<%= data.title %>" required><br><br>
 
         <label>Update Cuisine</label><br>
-        <input type="text" name="cuisine" value="<%= recipe.cuisine %>" required><br><br>
+        <input list="cuisine-options" name="cuisine" value="<%= data.cuisine %>" required>
+        <datalist id="cuisine-options">
+            <option value="American">American</option>
+            <option value="Chinese">Chinese</option>
+            <option value="Italian">Italian</option>
+            <option value="Mexican">Mexican</option>
+            <option value="Japanese">Japanese</option>
+        </datalist><br><br>
 
         <label>Update Description</label><br>
-        <textarea name="description" required><%= recipe.description %></textarea><br><br>
+        <textarea name="description" required><%= data.description %></textarea><br><br>
 
-        <label>Update Ingredients (one per line)</label><br>
-        <textarea name="ingredients" required><%= recipe.ingredients.join('\n') %></textarea><br><br>
+        <label>Common Ingredients</label><br>
+        <% 
+           // 1. Define the list of items that have checkboxes
+           const commonList = ['Salt', 'Pepper', 'Olive Oil', 'Garlic', 'Onion'];
+
+           // 2. Identify which ingredients are currently saved
+           const currentIngredients = Array.isArray(data.ingredients) ? data.ingredients : [];
+        %>
+        
+        <input type="checkbox" name="common_ingredients" value="Salt" <%= currentIngredients.includes('Salt') ? 'checked' : '' %>> Salt
+        <input type="checkbox" name="common_ingredients" value="Pepper" <%= currentIngredients.includes('Pepper') ? 'checked' : '' %>> Pepper
+        <input type="checkbox" name="common_ingredients" value="Olive Oil" <%= currentIngredients.includes('Olive Oil') ? 'checked' : '' %>> Olive Oil
+        <input type="checkbox" name="common_ingredients" value="Garlic" <%= currentIngredients.includes('Garlic') ? 'checked' : '' %>> Garlic
+        <input type="checkbox" name="common_ingredients" value="Onion" <%= currentIngredients.includes('Onion') ? 'checked' : '' %>> Onion
+        <br><br>
+
+        <label>Other Ingredients (one per line)</label><br>
+        <textarea name="ingredients"><% 
+            // 3. Filter out the common items so they don't appear in the text box
+            const otherIngredients = currentIngredients.filter(ing => !commonList.includes(ing));
+        %><%= otherIngredients.join('\n') %></textarea><br><br>
+
+        <% if (locals.error) { %>
+            <div class="error-box">
+                Please provide at least one ingredient!
+            </div>
+        <% } %>
 
         <label>Update Instructions (one per line)</label><br>
-        <textarea name="instructions" required><%= recipe.instructions.join('\n') %></textarea><br><br>
+        <textarea name="instructions" required><%= Array.isArray(data.instructions) ? data.instructions.join('\n') : data.instructions %></textarea><br><br>
 
         <button type="submit">Save Changes</button>
     </form>
     
     <br>
     <a href="/recipes">Cancel and Go Back</a>
-    
 </body>
 </html>

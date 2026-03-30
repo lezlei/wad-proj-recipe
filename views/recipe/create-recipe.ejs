@@ -1,12 +1,14 @@
 <h1>Create Recipe</h1>
 
+<% const data = oldData || {} %>
+
 <form method="POST" action="/recipes/create">
 
   <label>Title</label><br>
-  <input type="text" name="title" required><br><br>
+  <input type="text" name="title" value="<%= data.title || '' %>" required><br><br>
 
-  <label>Cusine</label><br>
-  <input list="cuisine-options" name="cuisine" required>
+  <label>Cuisine</label><br>
+  <input list="cuisine-options" name="cuisine" value="<%= data.cuisine || '' %>" required>
   <datalist id="cuisine-options">
     <option value="American">American</option>
     <option value="Chinese">Chinese</option>
@@ -16,21 +18,28 @@
   </datalist><br><br>
 
   <label>Description</label><br>
-  <textarea name="description" required></textarea><br><br>
+  <textarea name="description" required><%= data.description || '' %></textarea><br><br>
 
   <label>Common Ingredients</label><br>
-  <input type="checkbox" name="common_ingredients" value="Salt"> Salt
-  <input type="checkbox" name="common_ingredients" value="Pepper"> Pepper
-  <input type="checkbox" name="common_ingredients" value="Olive Oil"> Olive Oil
-  <input type="checkbox" name="common_ingredients" value="Garlic"> Garlic
-  <input type="checkbox" name="common_ingredients" value="Onion"> Onion
+  <% const common = data.common_ingredients || [] %>
+  <input type="checkbox" name="common_ingredients" value="Salt" <%= common.includes('Salt') ? 'checked' : '' %>> Salt
+  <input type="checkbox" name="common_ingredients" value="Pepper" <%= common.includes('Pepper') ? 'checked' : '' %>> Pepper
+  <input type="checkbox" name="common_ingredients" value="Olive Oil" <%= common.includes('Olive Oil') ? 'checked' : '' %>> Olive Oil
+  <input type="checkbox" name="common_ingredients" value="Garlic" <%= common.includes('Garlic') ? 'checked' : '' %>> Garlic
+  <input type="checkbox" name="common_ingredients" value="Onion" <%= common.includes('Onion') ? 'checked' : '' %>> Onion
   <br><br>
 
   <label>Other Ingredients (one per line)</label><br>
-  <textarea name="ingredients"></textarea><br><br>  
+  <textarea name="ingredients"><%= data.ingredients || '' %></textarea><br><br>   
+
+  <% if (locals.error) { %>
+    <div style="color: red;">
+      Please provide at least one ingredient! <br><br>   
+    </div>
+  <% } %>
 
   <label>Instructions (one per line) </label><br>
-  <textarea name="instructions" required></textarea><br><br>
+  <textarea name="instructions" required><%= data.instructions || '' %></textarea><br><br>
 
   <button type="submit">Create Recipe</button>
 

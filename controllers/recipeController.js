@@ -87,7 +87,7 @@ exports.createGet = async (req,res) => {
             return res.redirect('/auth/login')
         }
 
-        res.render('recipe/create-recipe')
+        res.render('recipe/create-recipe', { error : '', oldData: ''})
     } catch (error) {
         console.error(error);
     };
@@ -112,6 +112,11 @@ exports.createPost = async (req,res) => {
             const checkedArray = Array.isArray(common_ingredients) ? common_ingredients : [common_ingredients];
 
             ingredientsArray = [...checkedArray, ...ingredientsArray];
+        }
+
+        // If they didn't check a box AND didn't type anything
+        if (ingredientsArray.length === 0) {
+            return res.render('recipe/create-recipe', { error: 'At least one ingredient is required!', oldData: req.body });     
         }
 
         const instructionsArray = instructions.split('\n').filter(line => line.trim() !== '');
@@ -166,7 +171,7 @@ exports.updateGet = async (req,res)=>{
             return res.redirect('/recipes');
         };
 
-        res.render("recipe/update-recipe", {recipe: existingRecipe});
+        res.render("recipe/update-recipe", {recipe: existingRecipe, oldData: ''});
     } catch (error) {
         console.error(error);
         res.redirect('/recipes');
@@ -177,7 +182,7 @@ exports.updateGet = async (req,res)=>{
 exports.updatePost = async (req,res)=>{
     try {
         const recipeId = req.params.id;
-        const {title, cuisine, description, ingredients, instructions} = req.body;
+        const {title, cuisine, description, ingredients, common_ingredients, instructions} = req.body;  
         const currentUserID = req.session.userId;
 
         if (!currentUserID) {
@@ -186,7 +191,21 @@ exports.updatePost = async (req,res)=>{
 
         const user = await User.findById(currentUserID);
 
-        const ingredientsArray = ingredients.split('\n').filter(line => line.trim() !== '');
+        // Get array of ingredients that user input
+        let ingredientsArray = ingredients.split('\n').map(line => line.trim()).filter(line => line !== '');
+
+        // Check if user ticked box, combine ingredients ticked + ingredients input
+        if (common_ingredients) {
+            const checkedArray = Array.isArray(common_ingredients) ? common_ingredients : [common_ingredients];
+            ingredientsArray = [...new Set([...checkedArray, ...ingredientsArray])];
+        }
+
+        // If they didn't check a box AND didn't type anything
+        if (ingredientsArray.length === 0) {    
+            const recipe = await Recipe.findById(recipeId);
+            return res.render('recipe/update-recipe', { error: true, oldData: req.body, recipe: recipe});     
+        }   
+
         const instructionsArray = instructions.split('\n').filter(line => line.trim() !== '');
 
         const updatedRecipe = {
