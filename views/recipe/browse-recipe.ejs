@@ -1,4 +1,12 @@
 
+<nav style="position: sticky; top: 0; background: white; padding: 10px; border-bottom: 1px solid #ccc;" align="center">
+  <a href="#my-recipes">My Recipes</a> |
+  <a href="#my-favourites">My Favourites</a> |
+  <a href="#more-recipes">More Recipes You May Like</a> |
+  <a href="#top-rated">Top Rated Recipes</a> |
+  <a href="#all-recipes">All Recipes</a>
+</nav> <br>
+
 <% if (banner && banner.isActive) { %>
     <div style="background: yellow; padding: 1px; text-align: center;">
         <h3><%= banner.content %></h3>
@@ -8,6 +16,8 @@
 <h1 align="center"><u>Recipes</u></h1>
 
 <div align="center">
+<span id="my-recipes" style="display: block; position: relative; top: -60px; visibility: hidden;"></span>  
+
 <h2>My Recipes</h2>
 
 <table border="1">
@@ -94,6 +104,10 @@
     <% } %>
   </tbody>
 </table>
+</div>
+
+<div align='center'>
+<span id="my-favourites" style="display: block; position: relative; top: -60px; visibility: hidden;"></span>
 
 <h2>My Favourites</h2>
 
@@ -194,6 +208,8 @@
 <br><br><hr><br><br>
 
 <div align="center">
+<span id="more-recipes" style="display: block; position: relative; top: -60px; visibility: hidden;"></span>
+
 <h2>More Recipes You May Like</h2>
 <p><em>Based on your favourites!</em></p>
 
@@ -240,7 +256,10 @@
 
 <br><br><hr><br><br>
 
-<h2 align="center">Top Rated Recipes 🏆</h2>
+<div align="center">
+<span id="top-rated" style="display: block; position: relative; top: -60px; visibility: hidden;"></span>
+
+<h2>Top Rated Recipes 🏆</h2>
 
 <table border="1" width="100%" cellpadding="20" cellspacing="0" style="border-collapse: collapse; font-family: sans-serif;">
   <tr align="center" valign="bottom">
@@ -288,9 +307,14 @@
   </tr>
 </table>
 
+</div>
+
 <br><br><hr><br><br>
 
-<h2 align="center">All Recipes</h2>
+<div align="center">
+<span id="all-recipes" style="display: block; position: relative; top: -60px; visibility: hidden;"></span>
+
+<h2>All Recipes</h2>
 
 <form action="/recipes" method="get" align="center">
   <input type="text" name="search" placeholder="Search recipes..." value="<%= search || '' %>">
@@ -403,7 +427,4 @@
   </tbody>
 </table>
 
-</div>
-
-
-
+</div>  
