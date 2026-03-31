@@ -67,17 +67,21 @@ Recipe.searchByFilter = async function(search, filters) {
     
     // Loop each word in words array
     for (const word of words) {
+
+        // Empty array to store conditions for specific word
+        const wordConditions = []
+
         // regex for each word which includes the word & makes it case insensitive
         const regex = { $regex: word, $options: 'i' };
 
         if (filters.includes('title')) {
-            searchConditions.push({ title: regex });
+            wordConditions.push({ title: regex });
         }    
         if (filters.includes('ingredients')) {
-            searchConditions.push({ ingredients: regex });
+            wordConditions.push({ ingredients: regex });
         } 
         if (filters.includes('cuisine')) {
-            searchConditions.push({ cuisine: regex });
+            wordConditions.push({ cuisine: regex });
         }    
         if (filters.includes('author')) {
             const matchedUsers = await User.find({ username: regex });
@@ -85,13 +89,17 @@ Recipe.searchByFilter = async function(search, filters) {
             const userIds = matchedUsers.map(u => u._id);
             // Push into searchConditions to check if Recipe's authorIds is inside UserIds Array
             if (userIds.length) {
-                searchConditions.push({ authorID: { $in: userIds } });
+                wordConditions.push({ authorID: { $in: userIds } });
             }   
+        }
+        // Recipe must match at least one of the conditions for this word
+        if (wordConditions.length) {
+            searchConditions.push({ $or : wordConditions})
         }
     }
 
   // Finds all recipes that matches any conditions inside of searchConditions array 
-  return searchConditions.length ? Recipe.find({ $or: searchConditions }).populate('authorID', 'username') : []; 
+  return searchConditions.length ? Recipe.find({ $and: searchConditions }).populate('authorID', 'username') : []; 
 }
 
 // Function to delete a recipe from database
