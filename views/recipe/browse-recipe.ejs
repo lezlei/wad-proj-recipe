@@ -99,7 +99,8 @@
           </td>
           
           <td>
-            <a href="/recipes/<%= recipe._id %>/edit">Edit</a>
+            <form action="/recipes/<%= recipe._id %>/edit" method="GET" style="display:inline;">
+                <button type="submit" style="background-color: blue; color: white">Edit</button>
           </td>
         
 
@@ -426,7 +427,8 @@
           
           <% if (user && user.role === 'admin') { %>
             <td>
-              <a href="/recipes/<%= recipe._id %>/edit">Edit</a>
+              <form action="/recipes/<%= recipe._id %>/edit" method="GET" style="display:inline;">
+                <button type="submit" style="background-color: blue; color: white">Edit</button>
             </td>
 
             <td>
