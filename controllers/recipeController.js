@@ -51,16 +51,18 @@ exports.displayRecipes = async (req, res) => {
     const search = req.query.search || '';
 
     // Gets filters which are either filter that user chose or just all the titles (default)
-    const filters = [].concat(req.query.filter || 'title');
+    const filters = [].concat(req.query.filter || []);
 
     let allRecipes;
 
     // If search bar blank show all recipes, Else show filtered recipes
     if (!search) {
       allRecipes = await Recipe.retrieveAll();
+    } else if (filters.length == 0){
+      allRecipes = await Recipe.retrieveAll();
     } else {
       allRecipes = await Recipe.searchByFilter(search, filters);
-    }
+    };
 
     res.render('recipe/browse-recipe', {
       myRecipes: userRecipes,
