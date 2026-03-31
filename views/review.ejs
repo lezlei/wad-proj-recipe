@@ -109,7 +109,7 @@
               </form>
             </td>
           <% } else { %>
-            <td colspan="2">None</td>
+            <td colspan="2"></td>
           <% } %>
 
           <!-- ✅ REPLIES BUTTON -->
@@ -172,4 +172,11 @@ function toggleReplies(id) {
   const row = document.getElementById("replies-" + id);
   row.style.display = row.style.display === "none" ? "table-row" : "none";
 }
+
+<% if (openReview) { %>
+document.addEventListener("DOMContentLoaded", function() {
+  const row = document.getElementById("replies-<%= openReview %>");
+  if (row) row.style.display = "table-row";
+});
+<% } %>
 </script>

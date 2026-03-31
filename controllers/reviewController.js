@@ -11,7 +11,7 @@ exports.createReview = async (req, res) => {
     const userId = req.session.userId;
 
     const existingReview = await Review.findOne({ user: userId, recipe: recipeId });
-    if (existingReview) return res.send("You have already reviewed this recipe.");
+    if (existingReview) return res.send(`You have already reviewed this recipe.<br><a href="/reviews?recipeId=${recipeId}">Back to Reviews</a>`);
 
     await Review.create({ user: userId, recipe: recipeId, rating, comment });
 
@@ -34,7 +34,7 @@ exports.createReview = async (req, res) => {
 
 // Update an existing review
 exports.updateReview = async (req, res) => {
-  if (!req.session.userId) return res.send("You must be logged in.");
+
 
   try {
     const reviewId = req.body.reviewId;
@@ -69,7 +69,7 @@ exports.updateReview = async (req, res) => {
 
 // Delete a review
 exports.deleteReview = async (req, res) => {
-  if (!req.session.userId) return res.send("You must be logged in.");
+  
 
   try {
     const reviewId = req.body.reviewId;
@@ -107,7 +107,8 @@ exports.deleteReview = async (req, res) => {
 exports.getReviewsPage = async (req, res) => {
   try {
     const recipeId = req.query.recipeId || '';
-    const deleted = req.query.deleted || false; 
+    const deleted = req.query.deleted || false;
+    const openReview = req.query.openReview || null;
 
     let reviews = await Review.find({ recipe: recipeId })
     .populate("user")
@@ -130,7 +131,8 @@ exports.getReviewsPage = async (req, res) => {
       recipeId,
       userId: req.session.userId,
       role: req.session.role,
-      deleted // ✅ PASS TO VIEW
+      deleted,
+      openReview
     });
 
   } catch (error) {
@@ -150,9 +152,7 @@ exports.getUpdatePage = async (req, res) => {
 };
 // Vote a review
 exports.voteReview = async (req, res) => {
-  if (!req.session.userId) {
-    return res.send("You must be logged in.");
-  }
+  
 
   try {
     const { reviewId, value } = req.body;
@@ -213,7 +213,7 @@ exports.deleteAllReviews = async (req, res) => {
 };
 // Create a tread review
 exports.addReply = async (req, res) => {
-  if (!req.session.userId) return res.send("You must be logged in.");
+  
 
   try {
     const { reviewId, comment } = req.body;
@@ -229,14 +229,14 @@ exports.addReply = async (req, res) => {
 
     await review.save();
 
-    res.redirect('/reviews?recipeId=' + review.recipe);
+    res.redirect('/reviews?recipeId=' + review.recipe + '&openReview=' + reviewId);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 // Delete replies
 exports.deleteReply = async (req, res) => {
-  if (!req.session.userId) return res.send("You must be logged in.");
+  
 
   try {
     const { reviewId, replyId } = req.body;
