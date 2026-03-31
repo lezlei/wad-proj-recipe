@@ -324,20 +324,27 @@
 
 <h2>All Recipes</h2>
 
-<form action="/recipes" method="get" align="center">
+<form action="/recipes#all-recipes" method="get" align="center">
+
   <input type="text" name="search" placeholder="Search recipes..." value="<%= search || '' %>">
 
-  <select name="filter">
-    <option value="title" <%= filter === 'title' ? 'selected' : '' %>>By Title</option>
-    <option value="author" <%= filter === 'author' ? 'selected' : '' %>>By Author</option>
-    <option value="ingredients" <%= filter === 'ingredients' ? 'selected' : '' %>>By Ingredients</option>
-    <option value="cuisine" <%= filter === 'cuisine' ? 'selected' : '' %>>By Cuisine</option>
-  </select>
-
   <button type="submit">Search</button>
+
   <% if (search) { %>
     <a href="/recipes#all-recipes">Clear</a>
   <% } %>
+  
+  <br><br>
+  
+  <label>Filter by:</label>
+  <% ['title', 'author', 'ingredients', 'cuisine'].forEach(f => { %>
+    <% const isActive = filters.includes(f) %>
+    <label>
+      <input type="checkbox" name="filter" value="<%= f %>" <%= isActive ? 'checked' : '' %>>
+      <%= f.charAt(0).toUpperCase() + f.slice(1) %> 
+    </label>
+  <% }) %>
+
 </form>
 
 <div align="center">

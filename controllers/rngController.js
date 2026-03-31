@@ -96,7 +96,7 @@ exports.displayNextReco = async (req,res) => {
 exports.clearReco = async (req,res) => {
     try {
         req.session.currentRecipeId = null;
-        res.redirect('/recipes')
+        res.redirect('/recipes#all-recipes')
     } catch (err) {
         console.log("Error:", err);
         res.send('Failed to clear recommendation.');

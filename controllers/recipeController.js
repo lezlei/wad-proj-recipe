@@ -11,10 +11,13 @@ exports.displayRecipes = async (req, res) => {
       return res.redirect('/auth/login');
     }
 
-    const { search = '', filter = '' } = req.query;
+    // Retrieves Banner Announcement Text
+    const banner = await Announcement.findOne();
+
 
     // Fixed: use Mongoose's find() instead of findByID
     const userRecipes = await Recipe.find({ authorID: currentUserID });
+
 
     // Gets user's full profile
     const user = await User.findById(currentUserID).populate({
@@ -25,21 +28,6 @@ exports.displayRecipes = async (req, res) => {
     // Get user's favourite from profile
     const favRecipes = user.favourites;
 
-    let allRecipes;
-
-    if (!search) {
-      allRecipes = await Recipe.retrieveAll();
-    } else if (filter === 'author') {
-      const matchedUsers = await User.find({ username: { $regex: search, $options: 'i' } });
-      const userIds = matchedUsers.map(u => u._id);
-      allRecipes = await Recipe.searchByAuthor(userIds);
-    } else if (filter === 'title'){
-      allRecipes = await Recipe.searchByTitle(search);
-    } else if (filter === 'ingredients') {
-      allRecipes = await Recipe.searchByIngredient(search);   
-    } else if (filter === 'cuisine') {
-        allRecipes = await Recipe.searchByCuisine(search);
-    }   
 
     // Logic for More recipes you may like
     let recommendedRecipes = [];
@@ -54,11 +42,25 @@ exports.displayRecipes = async (req, res) => {
       }).limit(5).populate('authorID');
     } 
 
+
     // Retrieves Top 3 Trending Recipes
     let topRated = await Recipe.getTrending();
 
-    // Retrieves Banner Announcement Text
-    const banner = await Announcement.findOne();
+
+    // Gets words typed in the search bar from query
+    const search = req.query.search || '';
+
+    // Gets filters which are either filter that user chose or just all the titles (default)
+    const filters = [].concat(req.query.filter || 'title');
+
+    let allRecipes;
+
+    // If search bar blank show all recipes, Else show filtered recipes
+    if (!search) {
+      allRecipes = await Recipe.retrieveAll();
+    } else {
+      allRecipes = await Recipe.searchByFilter(search, filters);
+    }
 
     res.render('recipe/browse-recipe', {
       myRecipes: userRecipes,
@@ -68,8 +70,8 @@ exports.displayRecipes = async (req, res) => {
       topRated: topRated,
       user: user,
       search,
-      filter,
-      banner
+      filters,
+      banner    
     });
 
   } catch (error) {

@@ -56,25 +56,43 @@ Recipe.updateRecipe = function(recipeId, authorId, updatedData) {
     );
 };
 
-// Function to filter recipes by same titles when searching
-Recipe.searchByTitle = function(query){
-    return Recipe.find({ title : { $regex: query, $options: 'i' } }).populate('authorID');
-};
+// Function to filter in Search Bar
+Recipe.searchByFilter = async function(search, filters) {
 
-// Function to filter recipes by same author when searching
-Recipe.searchByAuthor = function(userIds) {
-    return Recipe.find({ authorID: { $in : userIds } }).populate('authorID');
-};
+    // Empty array for search conditions
+    const searchConditions = []
 
-// Function to filter recipes by same ingredient when searching
-Recipe.searchByIngredient = function(query) {
-    return Recipe.find({ ingredients: {$elemMatch : { $regex: query, $options: 'i' } }}).populate('authorID');
-};
+    // Split User's search into words
+    const words = search.trim().split(/\s+/);
+    
+    // Loop each word in words array
+    for (const word of words) {
+        // regex for each word which includes the word & makes it case insensitive
+        const regex = { $regex: word, $options: 'i' };
 
-// Function to filter recipes by same cuisine when searching
-Recipe.searchByCuisine = function(query) {
-    return Recipe.find({ cuisine : { $regex: query, $options: 'i' } }).populate('authorID');
-};
+        if (filters.includes('title')) {
+            searchConditions.push({ title: regex });
+        }    
+        if (filters.includes('ingredients')) {
+            searchConditions.push({ ingredients: regex });
+        } 
+        if (filters.includes('cuisine')) {
+            searchConditions.push({ cuisine: regex });
+        }    
+        if (filters.includes('author')) {
+            const matchedUsers = await User.find({ username: regex });
+            // Extract User IDs into an array
+            const userIds = matchedUsers.map(u => u._id);
+            // Push into searchConditions to check if Recipe's authorIds is inside UserIds Array
+            if (userIds.length) {
+                searchConditions.push({ authorID: { $in: userIds } });
+            }   
+        }
+    }
+
+  // Finds all recipes that matches any conditions inside of searchConditions array 
+  return searchConditions.length ? Recipe.find({ $or: searchConditions }).populate('authorID', 'username') : []; 
+}
 
 // Function to delete a recipe from database
 Recipe.deleteRecipe = function(recipeId, authorId) {
