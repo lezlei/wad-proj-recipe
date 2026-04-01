@@ -1,2 +1,0 @@
-hi 
-fuck ADI
