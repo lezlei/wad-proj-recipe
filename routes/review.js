@@ -12,13 +12,13 @@ router.get("/", reviewController.getReviewsPage);
 router.post("/", auth.isLoggedIn,reviewController.createReview);
 //update reviews
 router.post("/update",auth.isLoggedIn,reviewController.updateReview);
-router.get("/edit", reviewController.getUpdatePage);
+router.get("/edit", auth.isLoggedIn, reviewController.getUpdatePage);
 //delete review
 router.post("/delete",auth.isLoggedIn,reviewController.deleteReview);
 //update reviews
 router.post("/vote", auth.isLoggedIn,reviewController.voteReview);
 //delete review
-router.post("/delete-all", reviewController.deleteAllReviews);
+router.post("/delete-all", auth.isLoggedIn, reviewController.deleteAllReviews);
 //create tread review
 router.post("/reply",auth.isLoggedIn,reviewController.addReply);
 //delete replies
