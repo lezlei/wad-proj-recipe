@@ -46,8 +46,8 @@ exports.displayRecipes = async (req, res) => {
     // Gets words typed in the search bar from query
     const search = req.query.search || '';
 
-    // Gets filters which are either filter that user chose or just all the titles (default)
-    const filters = [].concat(req.query.filter || []);
+    // Gets filters which are either filter that user chose or just by titles (default)
+    const filters = [].concat(req.query.filter || ['title'] );
 
     let allRecipes;
 
