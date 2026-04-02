@@ -62,3 +62,14 @@ The Recipe main page is separated into 5 different sections :
 5. All Recipes
 - **Search Bar + Filter Checkboxes** - Users can search and filter for specific recipes that they want and the table will dynamically change to display the recipes that the User wants to see. If user did not search anything or did not select any checkbox, the table will just display all recipes created by everyone
 - **Random Recipe Generator** - Users can press on "Don't know what to eat? Click Me!" link which redirects them to a random recipe generator page which will show them a recipe that 1. the user did not create 2. the user did not favourite 3. the user have not seen before. When the user lands on the page, they get to add the recipe to favourites by pressing the 'Add to Favourites' button. They get to see the recipe's reviews by clicking on the link 'View Reviews'. When they want another random recipe, they can press on the button 'Get Another Recommendation'. If the user have seen all recipes available to them, the page will show "You have seen all recipes!". The user then have a choice to press on the link 'Start Again' which restarts the random recipe generator and show the user all recipes they had seen before again. The user can also press on the link 'Back to Recipes' which redirects them back to the Recipes main page. 
+
+### Routes
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/recipes` | View Recipe main page |
+| GET | `/recipes` | View Recipe main page |
+
+
+### Access Control
+
