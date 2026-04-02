@@ -69,7 +69,7 @@ The Recipe main page is separated into 5 different sections :
 |--------|-------|-------------|
 | GET | `/recipes` | View all recipes |
 | GET | `/recipes/create` | Show create recipe form |
-| POST | `/recipes/create` | Submit new recipe |
+| POST | `/recipes/create` | Submit new recipe form |
 | GET | `/recipes/recommendation` | Get a random recipe recommendation |
 | GET | `/recipes/recommendation/next` | Get the next recommendation |
 | GET | `/recommendation/clear` | Clear recommendation session |
@@ -85,4 +85,5 @@ The Recipe main page is separated into 5 different sections :
 
 
 ### Access Control
-
+- Users can only edit or delete their own recipes
+- Admin can edit or delete everyone's recipes
