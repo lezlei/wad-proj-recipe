@@ -7,10 +7,6 @@ exports.displayRecipes = async (req, res) => {
   try { 
     const currentUserID = req.session.userId;
 
-    if (!currentUserID) {
-      return res.redirect('/auth/login');
-    }
-
     // Retrieves Banner Announcement Text
     const banner = await Announcement.findOne();
 

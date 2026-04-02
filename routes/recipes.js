@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 const recipeController = require('../controllers/recipeController');
 const rngController = require('../controllers/rngController');
+const auth = require('../middleware/auth-middleware')
 
 // Get and display all recipes from specific user and everyone else when 'Browse Recipes' is clicked
-router.get("/recipes", recipeController.displayRecipes);
+router.get("/recipes", auth.isLoggedIn, recipeController.displayRecipes);
 
 // Get Form to create recipe
 router.get('/recipes/create', recipeController.createGet);
