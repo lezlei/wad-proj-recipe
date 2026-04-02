@@ -35,6 +35,7 @@ Each recipe has a dedicated reviews page where users can share feedback and inte
 #########################################################################################################################################################
 
 ## Recipes
+
 The Recipe main page is separated into 5 different sections : 
 1. My Recipes
 2. My Favourites
@@ -43,7 +44,21 @@ The Recipe main page is separated into 5 different sections :
 5. All Recipes
 
 ### Features
+
+1. My Recipes
 - **Create a recipe** - Users can create their own recipes by pressing on the +Create Link in 'My Recipes' section
 - **Update a recipe** - Users can update the recipes that they created by pressing on 'Update' button in the table under 'My Recipes'
 - **Delete a recipes** - Users can delete their own recipes by pressing on 'delete' button in the table under 'My Recipes' which also gives them a warning prompt if they really want to delete the recipe
-- 
+
+2. My Favourites
+
+3. More Recipes You May Like
+
+4. Top Rated Recipes
+- Displays the Top 3 recipes that are sorted by highest review count and highest average rating score
+- Users can press on the 'View Recipe' link for each of the top 3 to view the recipe individually
+- Users can add the recipe to favourite or view reviews of the recipe
+
+5. All Recipes
+- **Search Bar + Filter Checkboxes** - Users can search and filter for specific recipes that they want and the table will dynamically change to display the recipes that the User wants to see. If user did not search anything or did not choose any checkbox, the table will just display all recipes created by everyone
+- **Random Recipe Generator** - Users can 
