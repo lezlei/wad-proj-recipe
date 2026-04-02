@@ -278,7 +278,7 @@ exports.addFavouriteFromBrowse = async (req, res) => {
 
         const origin = req.query.origin || 'all-recipes';
 
-        res.redirect('/recipes#${origin}');
+        res.redirect(`/recipes#${origin}`);
         
     } catch (error) {
         console.error("Error adding to favourites:", error);
