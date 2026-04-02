@@ -87,3 +87,32 @@ The Recipe main page is separated into 5 different sections :
 ### Access Control
 - Users can only edit or delete their own recipes
 - Admin can edit or delete everyone's recipes
+
+## Admin Panel
+
+The admin panel is a streamlined "Command Center" for admins, designed to handle user permissions and access along with the ability to issue announcements on the website.
+
+### Features
+
+- **Update Users' Roles** - Admins are able to update the roles of all users from "User" to "Admin" and vice versa, granting a user the "Admin" role gives them permission to access the admin panel, as well as the ability to edit/delete any recipe.
+- **Ban User** -  Admins are able to toggle ban/unban users in the event it is appropriate to do so (e.g. The user has sent out malicious content onto the website).
+- **Delete User** - Admins are able to delete users in the event it is appropriate to do so.
+- **Announcement** - Admins are able to issue announcements that will appear on the website's recipe browser in the event the developers need to communicate information to all users. Admins are able to turn off the announcement banner if it is no longer needed.
+
+### Routes
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `auth/admin` | View the admin panel |
+| POST | `/auth/update-role` | Update Users' Roles |
+| POST | `/auth/toggle-suspend` | Toggle ban/unban a user |
+| POST | `/auth/delete` | Delete a user's account |
+| POST | `/auth/announcement` | Publish an announcement onto the recipe browser |
+| POST | `/auth/deactivate-banner` | Turn off/deactivate the announcement banner |
+
+### Access Control
+- Only admins can view/access the admin panel
+- Only admins are able to execute the features in the admin panel
+- Users will not be able to see the button to access the admin panel
+
+#########################################################################################################################################################
