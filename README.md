@@ -120,6 +120,8 @@ The Recipe main page is separated into 5 different sections :
 - Users can only edit or delete their own recipes
 - Admin can edit or delete everyone's recipes
 
+#########################################################################################################################################################
+
 ## Admin Panel
 
 The admin panel is a streamlined "Command Center" for admins, designed to handle user permissions and access along with the ability to issue announcements on the website.
