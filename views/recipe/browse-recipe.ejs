@@ -264,7 +264,7 @@
               <button type="submit">View Reviews</button>
             </form>
             <br><br>
-            <form action="/recipes/<%= recipe._id %>/favourite" method="POST" style="display:inline;">
+            <form action="/recipes/<%= recipe._id %>/favourite?origin=more-recipes" method="POST" style="display:inline;">
               <button type="submit">Add to Favourites</button>
             </form>
           </td>
@@ -436,7 +436,7 @@
             </form>
             <br><br>
             <% if (recipe.authorID && user && String(recipe.authorID._id) !== String(user._id) && !isFavourited) { %>
-              <form action="/recipes/<%= recipe._id %>/favourite" method="POST" style="display:inline;">
+              <form action="/recipes/<%= recipe._id %>/favourite?origin=all-recipes" method="POST" style="display:inline;">
                 <button type="submit">Add to Favourites</button>
               </form>
             <% } else if (isFavourited) { %>
