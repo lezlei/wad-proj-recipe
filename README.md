@@ -1,3 +1,35 @@
+# Recipe Website REAMDE
+
+## Authentication & User Management
+
+Handles secure user onboarding, session tracking, and route protection across the entire application.
+
+### Features
+
+- **Secure Registration & Login** — Users can create accounts and log in securely. Passwords are encrypted in the database using `bcrypt`.
+- **Brute-Force Protection (Rate Limiting)** — The login system tracks failed attempts using anonymous session data. If a user fails to log into a specific username 5 times within a single session, the account is temporarily locked for that session and prompts a password reset. 
+- **Profile Management** — Logged-in users can view their profile, update their registered email, or permanently delete their account from the database.
+- **Security Middleware** — Implements custom `isLoggedIn` and `isAdmin` middleware to act as bouncers, automatically intercepting and redirecting unauthorized traffic away from protected routes.
+
+### Routes
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/auth/register` | View the registration form |
+| POST | `/auth/register` | Register a new user account |
+| GET | `/auth/login` | View the login form |
+| POST | `/auth/login` | Authenticate user (includes 5-strike rate limiting) |
+| GET | `/auth/profile` | View user profile |
+| POST | `/auth/profile/update` | Update user email |
+| POST | `/auth/profile/delete` | Permanently delete user account |
+| GET | `/auth/logout` | Destroy session and log out |
+
+### Access Control
+- Register and Login routes are completely public.
+- Viewing or modifying a profile requires an active, authenticated user session.
+
+#########################################################################################################################################################
+
 ## Reviews
 
 Each recipe has a dedicated reviews page where users can share feedback and interact with other reviewers.
