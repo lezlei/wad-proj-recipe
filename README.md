@@ -31,3 +31,19 @@ Each recipe has a dedicated reviews page where users can share feedback and inte
 - Creating, editing, voting, and replying require login.
 - Users can only modify or delete their own reviews/replies.
 - Admins can modify or delete any review, reply, or all reviews for a recipe.
+
+#########################################################################################################################################################
+
+## Recipes
+The Recipe main page is separated into 5 different sections : 
+1. My Recipes
+2. My Favourites
+3. More Recipes You May Like
+4. Top Rated Recipes
+5. All Recipes
+
+### Features
+- **Create a recipe** - Users can create their own recipes by pressing on the +Create Link in 'My Recipes' section
+- **Update a recipe** - Users can update the recipes that they created by pressing on 'Update' button in the table under 'My Recipes'
+- **Delete a recipes** - Users can delete their own recipes by pressing on 'delete' button in the table under 'My Recipes' which also gives them a warning prompt if they really want to delete the recipe
+- 
