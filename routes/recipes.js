@@ -18,7 +18,7 @@ router.post('/recipes/create', auth.isLoggedIn, recipeController.createPost);
 // DYNAMIC routes to displayReco/addFav
 
 // GET Form for recommendation
-router.get('/recipes/recommendation', rngController.displayReco);
+router.get('/recipes/recommendation', auth.isLoggedIn, rngController.displayReco);
 
 // POST Form for adding to favourites
 router.post('/favourites/:recipeId/add', rngController.addFavourite);

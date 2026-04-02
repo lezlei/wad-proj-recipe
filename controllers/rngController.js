@@ -6,10 +6,6 @@ exports.displayReco = async (req,res) => {
 
         // Checks if user is logged in
         const currentUserID = req.session.userId;
-
-        if (!currentUserID) {
-            return res.redirect('/auth/login');
-        }
         
         // If user has not seen any new recipes yet
         if (!req.session.seenRecipes) {
@@ -62,8 +58,7 @@ exports.addFavourite = async (req,res) => {
         const user = await User.findById(currentUserID);
         const alreadyFavourited = user.favourites.includes(recipeID)
 
-
-
+        
         // Appends new recipeid into user's array of favourites if not inside already
         if (alreadyFavourited){
             req.session.favmessage = 'Already added to favourites!'
