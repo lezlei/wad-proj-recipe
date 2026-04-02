@@ -67,8 +67,21 @@ The Recipe main page is separated into 5 different sections :
 
 | Method | Route | Description |
 |--------|-------|-------------|
-| GET | `/recipes` | View Recipe main page |
-| GET | `/recipes` | View Recipe main page |
+| GET | `/recipes` | View all recipes |
+| GET | `/recipes/create` | Show create recipe form |
+| POST | `/recipes/create` | Submit new recipe |
+| GET | `/recipes/recommendation` | Get a random recipe recommendation |
+| GET | `/recipes/recommendation/next` | Get the next recommendation |
+| GET | `/recommendation/clear` | Clear recommendation session |
+| POST | `/favourites/:recipeId/add` | Add recipe to favourites |
+| POST | `/favourites/:recipeId/delete` | Remove recipe from favourites |
+| POST | `/recipes/:recipeId/favourite` | Add to favourites from browse page |
+| GET | `/recipes/:topRatedId` | View a top-rated recipe |
+| POST | `/recipes/:topRatedId/add` | Add to favourites from top-rated page |
+| POST | `/recipes/:recipeId/note` | Update personal note on a favourited recipe |
+| GET | `/recipes/:id/edit` | Show edit recipe form |
+| POST | `/recipes/:id/update` | Submit recipe update |
+| POST | `/recipes/:id/delete` | Delete a recipe |
 
 
 ### Access Control
