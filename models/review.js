@@ -36,6 +36,7 @@ const reviewSchema = new mongoose.Schema({
         createdAt: { type: Date, default: Date.now }
     }
     ]},
+    // this allows mongoose to automatically store when the review was created at 
     { timestamps: true});
 
 module.exports=mongoose.model("Review",reviewSchema);
