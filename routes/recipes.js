@@ -8,10 +8,10 @@ const auth = require('../middleware/auth-middleware')
 router.get("/recipes", auth.isLoggedIn, recipeController.displayRecipes);
 
 // Get Form to create recipe
-router.get('/recipes/create', recipeController.createGet);
+router.get('/recipes/create', auth.isLoggedIn, recipeController.createGet);
 
 // Post Form after filling in the recipe form
-router.post('/recipes/create', recipeController.createPost);
+router.post('/recipes/create', auth.isLoggedIn, recipeController.createPost);
 
 
 
@@ -48,13 +48,13 @@ router.post('/recipes/:recipeId/note', recipeController.updateFavouriteNote);
 // DYNAMIC routes to update/delete recipe
 
 // Get Form to edit recipe
-router.get('/recipes/:id/edit',recipeController.updateGet)
+router.get('/recipes/:id/edit', auth.isLoggedIn, recipeController.updateGet)
 
 // Post Form to update recipe
-router.post('/recipes/:id/update',recipeController.updatePost)
+router.post('/recipes/:id/update',auth.isLoggedIn, recipeController.updatePost)
 
 // Post Form to delete recipe
-router.post('/recipes/:id/delete', recipeController.deletePost);
+router.post('/recipes/:id/delete', auth.isLoggedIn, recipeController.deletePost);
 
 
 module.exports = router

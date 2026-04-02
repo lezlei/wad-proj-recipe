@@ -84,10 +84,6 @@ exports.createGet = async (req,res) => {
     try {
         const currentUserID = req.session.userId
 
-        if (!currentUserID){
-            return res.redirect('/auth/login')
-        }
-
         res.render('recipe/create-recipe', { error : '', oldData: ''})
     } catch (error) {
         console.error(error);
@@ -100,10 +96,6 @@ exports.createPost = async (req,res) => {
         const {title, cuisine, description, common_ingredients, ingredients,  instructions} = req.body;
 
         const currentUserID = req.session.userId;
-
-        if (!currentUserID){
-            return res.redirect('/auth/login')
-        }
 
         // Get array of ingredients that user input
         let ingredientsArray = ingredients.split('\n').map(line => line.trim()).filter(line => line !== '');
@@ -148,10 +140,6 @@ exports.updateGet = async (req,res)=>{
     try {
         const currentUserID = req.session.userId;
 
-        if(!currentUserID) {
-            return res.redirect('/auth/login');
-        }
-
         const recipeId = req.params.id;
 
         const user = await User.findById(currentUserID);
@@ -185,10 +173,6 @@ exports.updatePost = async (req,res)=>{
         const recipeId = req.params.id;
         const {title, cuisine, description, ingredients, common_ingredients, instructions} = req.body;  
         const currentUserID = req.session.userId;
-
-        if (!currentUserID) {
-            return res.redirect('/auth/login');
-        }
 
         const user = await User.findById(currentUserID);
 
@@ -245,10 +229,6 @@ exports.deletePost = async (req, res) => {
     try {
         const recipeId = req.params.id;
         const currentUserID = req.session.userId;
-
-        if (!currentUserID) {
-            return res.redirect('/auth/login');
-        }
 
         const currentUser = await User.findById(currentUserID);
         
