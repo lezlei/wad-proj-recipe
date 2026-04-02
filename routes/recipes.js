@@ -21,28 +21,28 @@ router.post('/recipes/create', auth.isLoggedIn, recipeController.createPost);
 router.get('/recipes/recommendation', auth.isLoggedIn, rngController.displayReco);
 
 // POST Form for adding to favourites
-router.post('/favourites/:recipeId/add', rngController.addFavourite);
+router.post('/favourites/:recipeId/add', auth.isLoggedIn, rngController.addFavourite);
 
 // POST Form to add a recipe to favourites from the browse page
-router.post('/recipes/:recipeId/favourite', recipeController.addFavouriteFromBrowse);
+router.post('/recipes/:recipeId/favourite', auth.isLoggedIn, recipeController.addFavouriteFromBrowse);
 
 // GET Form for next recommendation
-router.get('/recipes/recommendation/next', rngController.displayNextReco);
+router.get('/recipes/recommendation/next', auth.isLoggedIn, rngController.displayNextReco);
 
 // GET Form to clear recommendation when user returns to main recipes page
-router.get('/recommendation/clear', rngController.clearReco);
+router.get('/recommendation/clear', auth.isLoggedIn, rngController.clearReco);
 
 // POST Form for removing from favourites
-router.post('/favourites/:recipeId/delete', rngController.removeFavourite);
+router.post('/favourites/:recipeId/delete', auth.isLoggedIn, rngController.removeFavourite);
 
 // GET Form for retrieving one of the Top 3 Rated Recipe
-router.get('/recipes/:topRatedId', recipeController.viewTopRated);
+router.get('/recipes/:topRatedId', auth.isLoggedIn, recipeController.viewTopRated);
 
 // POST Form to add favourite when user in Top Rated Recipe Page
-router.post('/recipes/:topRatedId/add', recipeController.addFavouriteFromTopRated);
+router.post('/recipes/:topRatedId/add', auth.isLoggedIn, recipeController.addFavouriteFromTopRated);
 
 // POST Form to update a personal note for a favourited recipe
-router.post('/recipes/:recipeId/note', recipeController.updateFavouriteNote);
+router.post('/recipes/:recipeId/note', auth.isLoggedIn, recipeController.updateFavouriteNote);
 
 
 // DYNAMIC routes to update/delete recipe

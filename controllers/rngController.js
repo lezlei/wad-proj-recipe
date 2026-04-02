@@ -56,7 +56,7 @@ exports.addFavourite = async (req,res) => {
 
         // Checks if recipe already inside user's array of favourites
         const user = await User.findById(currentUserID);
-        const alreadyFavourited = user.favourites.includes(recipeID)
+        const alreadyFavourited = user.favourites.some(fav => fav.toString() === recipeID);
 
         
         // Appends new recipeid into user's array of favourites if not inside already
@@ -102,10 +102,6 @@ exports.removeFavourite = async (req, res) => {
     try {
         const currentUserID = req.session.userId;
         const recipeID = req.params.recipeId;
-
-        if (!currentUserID) {
-            return res.redirect('/auth/login');
-        }
 
         // Use $pull to remove the recipeID from the favourites array
         await User.findByIdAndUpdate(currentUserID, {

@@ -260,12 +260,8 @@ exports.addFavouriteFromBrowse = async (req, res) => {
         const currentUserID = req.session.userId;
         const recipeID = req.params.recipeId;
 
-        if (!currentUserID) {
-            return res.redirect('/auth/login');
-        }
-
         const user = await User.findById(currentUserID);
-        const alreadyFavourited = user.favourites.includes(recipeID);
+        const alreadyFavourited = user.favourites.some(fav => fav.toString() === recipeID);
 
         if (!alreadyFavourited) {
             await User.findByIdAndUpdate(currentUserID, {
@@ -291,10 +287,6 @@ exports.viewTopRated = async (req,res) => {
     try {
         const currentUserID = req.session.userId;
 
-        if (!currentUserID) {
-            return res.redirect('/auth/login');
-        }
-
         const recipeId = req.params.topRatedId;
         req.session.recipeId = recipeId;
 
@@ -316,12 +308,8 @@ exports.addFavouriteFromTopRated = async (req, res) => {
         const currentUserID = req.session.userId;
         const recipeID = req.session.recipeId;
 
-        if (!currentUserID) {
-            return res.redirect('/auth/login');
-        }
-
         const user = await User.findById(currentUserID);
-        const alreadyFavourited = user.favourites.includes(recipeID);
+        const alreadyFavourited = user.favourites.some(fav => fav.toString() === recipeID);
 
         if (alreadyFavourited){
             req.session.favmessage = 'Already added to favourites!'
@@ -347,8 +335,6 @@ exports.updateFavouriteNote = async (req, res) => {
         const currentUserID = req.session.userId;
         const recipeID = req.params.recipeId;
         const newNote = req.body.note;
-
-        if (!currentUserID) return res.redirect('/auth/login');
 
         const user = await User.findById(currentUserID);
 
