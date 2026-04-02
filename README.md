@@ -56,9 +56,9 @@ The Recipe main page is separated into 5 different sections :
 
 4. Top Rated Recipes
 - Displays the Top 3 recipes that are sorted by highest review count and highest average rating score
-- Users can press on the 'View Recipe' link for each of the top 3 to view the recipe individually
-- Users can add the recipe to favourite or view reviews of the recipe
+- Users can press on the 'View Recipe' link for each of the top 3 to view each recipe individually
+- Users can add the recipe to favourites or view reviews of the recipe
 
 5. All Recipes
-- **Search Bar + Filter Checkboxes** - Users can search and filter for specific recipes that they want and the table will dynamically change to display the recipes that the User wants to see. If user did not search anything or did not choose any checkbox, the table will just display all recipes created by everyone
+- **Search Bar + Filter Checkboxes** - Users can search and filter for specific recipes that they want and the table will dynamically change to display the recipes that the User wants to see. If user did not search anything or did not select any checkbox, the table will just display all recipes created by everyone
 - **Random Recipe Generator** - Users can 
