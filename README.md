@@ -1,4 +1,4 @@
-# Recipe Website REAMDE
+# Recipe Website README
 
 ## Authentication & User Management
 
