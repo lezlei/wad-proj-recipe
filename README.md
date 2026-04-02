@@ -1,4 +1,10 @@
-# Recipe Website REAMDE
+# Recipe Website README
+- **Prerequisites** - Before running the project, ensure you have the following installed on your machine: Node.js 
+1. Open the Project in your Terminal - if using VS Code, open the folder in VS Code and use the integrated terminal
+2. Install Dependencies - run 'npm install' 
+3. Verify the Environment File - ensure config.env file is present in the main project folder, together with server.js
+4. Start the Server - run 'npm start' or 'node server.js'. You should see 'MongoDB connected successfully', 'Server running at http://localhost:3000/' in the terminal.
+5. Access the Website - Create an account and enjoy!
 
 ## Authentication & User Management
 
@@ -83,8 +89,15 @@ The Recipe main page is separated into 5 different sections :
 - **Delete a recipes** - Users can delete their own recipes by pressing on 'delete' button in the table under 'My Recipes' which also gives them a warning prompt if they really want to delete the recipe
 
 2. My Favourites
+- **Create (Add):** - Users can save recipes to 'My Favourites' from multiple locations across the site, including the main Browse page, the Top Rated page, and the Random Recipe Generator.
+- **Read (View):** - Users can view all of the favourited recipes in a dedicated, consolidated list under the 'My Favourites' section.
+- **Update (Notes):** - Users can add, edit, or overwrite custom personal notes attached to any of their favourited recipes (e.g., to record ingredient substitutions or cooking reminders) via the text field and 'Save Note' button.
+- **Delete a favourite** - Users can easily remove a recipe from 'My Favourites' via the 'Remove' button
 
 3. More Recipes You May Like
+- **Smart Recommendations** - Provides up to 5 tailored recipe suggestions based on the user's established tastes.
+- **Cuisine Matching** - The system automatically analyzes the cuisines of the user's currently favourited recipes and recommends other dishes from those exact same cuisines.
+- **Intelligent Filtering** - Automatically filters the suggestions to ensure it never recommends a recipe the user has already authored or already added to their favourites.
 
 4. Top Rated Recipes
 - Displays the Top 3 recipes that are sorted by highest review count and highest average rating score
