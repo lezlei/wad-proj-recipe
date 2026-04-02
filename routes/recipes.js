@@ -40,6 +40,8 @@ router.get('/recipes/:topRatedId', recipeController.viewTopRated);
 // POST Form to add favourite when user in Top Rated Recipe Page
 router.post('/recipes/:topRatedId/add', recipeController.addFavouriteFromTopRated);
 
+// POST Form to update a personal note for a favourited recipe
+router.post('/recipes/:recipeId/note', recipeController.updateFavouriteNote);
 
 
 // DYNAMIC routes to update/delete recipe

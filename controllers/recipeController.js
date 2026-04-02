@@ -67,6 +67,7 @@ exports.displayRecipes = async (req, res) => {
     res.render('recipe/browse-recipe', {
       myRecipes: userRecipes,
       favRecipes: favRecipes,
+      favouriteNotes: user.favouriteNotes,
       allRecipes: allRecipes,
       recommendedRecipes: recommendedRecipes,
       topRated: topRated,
@@ -363,3 +364,33 @@ exports.addFavouriteFromTopRated = async (req, res) => {
         res.redirect('/recipes');
     }
 };  
+
+// Logic for POST to update a personal note on a favourited recipe
+exports.updateFavouriteNote = async (req, res) => {
+    try {
+        const currentUserID = req.session.userId;
+        const recipeID = req.params.recipeId;
+        const newNote = req.body.note;
+
+        if (!currentUserID) return res.redirect('/auth/login');
+
+        const user = await User.findById(currentUserID);
+
+        const existingNoteIndex = user.favouriteNotes.findIndex(n => String(n.recipeId) === String(recipeID));
+
+        if (existingNoteIndex !== -1) {
+
+            user.favouriteNotes[existingNoteIndex].note = newNote;
+        } else {
+
+            user.favouriteNotes.push({ recipeId: recipeID, note: newNote });
+        }
+
+        await user.save();
+        res.redirect('/recipes#my-favourites');
+        
+    } catch (error) {
+        console.error("Error updating note:", error);
+        res.redirect('/recipes');
+    }
+};

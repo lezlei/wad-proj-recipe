@@ -155,8 +155,9 @@
       <th>Instructions</th>
       <th>Author</th>
       <th>Reviews</th>
+      <th>Personal Note</th>
     <% if (favRecipes.length > 0) { %>
-        <th colspan="2">Actions</th>
+        <th>Actions</th>
     <% } %>
     </tr>
 
@@ -166,7 +167,7 @@
 
     <% if (favRecipes.length === 0) { %>
       <tr>
-        <td colspan="7">You have not added any favourites yet.</td>
+        <td colspan="9">You have not added any favourites yet.</td>
       </tr>
     <% } else { %>
       <% favRecipes.forEach(recipe => { %>
@@ -201,6 +202,24 @@
           <td>
             Avg Rating: <%= recipe.avgScore ? recipe.avgScore.toFixed(2) : 'N/A' %> / 5 <br>
             Reviews: <%= recipe.reviewCount %>
+          </td>
+
+          <td>
+            <% 
+              let currentNote = '';
+              if (typeof favouriteNotes !== 'undefined' && favouriteNotes.length > 0) {
+                  const noteData = favouriteNotes.find(n => String(n.recipeId) === String(recipe._id));
+                  if (noteData) {
+                      currentNote = noteData.note;
+                  }
+              }
+            %>
+
+            <form action="/recipes/<%= recipe._id %>/note" method="POST">
+                <input type="text" name="note" value="<%= currentNote %>" placeholder="E.g., Needs more salt...">
+                <br><br>
+                <button type="submit">Save Note</button>
+            </form>
           </td>
 
           <td>

@@ -34,6 +34,12 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Recipe' 
         }
+    ],
+    favouriteNotes: [
+        {
+        recipeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' },
+        note: { type: String, default: '' }
+        }
     ]
 });
 
