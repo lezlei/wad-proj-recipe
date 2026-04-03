@@ -48,6 +48,7 @@ The admin panel is a streamlined "Command Center" for admins, designed to handle
 - **Ban User** -  Admins are able to toggle ban/unban users in the event it is appropriate to do so (e.g. The user has sent out malicious content onto the website).
 - **Delete User** - Admins are able to delete users in the event it is appropriate to do so.
 - **Announcement** - Admins are able to issue announcements that will appear on the website's recipe browser in the event the developers need to communicate information to all users. Admins are able to turn off the announcement banner if it is no longer needed.
+- **Update Password** - Admins are able to update users' passwords when requested from the users' associated email.
 
 ### Routes
 
