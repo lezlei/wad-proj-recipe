@@ -42,8 +42,22 @@ exports.DeleteUser = async function (userId) {
             return false
         }
 
+        const userReviews = await Review.find({ user: userId })
+
+        for (const review of userReviews) {
+            const recipe = await Recipe.findById(review.recipe)
+            if (!recipe) continue
+
+            const currentCount = recipe.reviewCount || 1
+            const currentAvg = recipe.avgScore || 0
+            const newCount = Math.max(currentCount - 1, 0)
+            const newAvg = newCount > 0
+                ? (currentAvg * currentCount - review.rating) / newCount
+                : 0
+
+            await Recipe.findByIdAndUpdate(review.recipe, { reviewCount: newCount, avgScore: newAvg })
+        }
         await Review.deleteMany({ user: userId })
-        await Recipe.deleteMany({ authorID: userId})
         const result = await User.deleteOne({ _id: userId})
         return result.deletedCount > 0
     } catch (error) {
