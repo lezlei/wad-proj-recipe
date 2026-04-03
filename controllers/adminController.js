@@ -69,14 +69,15 @@ exports.deactivateBanner = async (req, res) => {
 exports.resetPassword = async (req, res) => {
     try {
         const userId = req.body.id;
+        const customPassword = req.body.newPassword; 
         
-        // Hash a simple default password
-        const hashedDefaultPassword = await bcrypt.hash("password123", 10);
+        // Hash the custom password
+        const hashedCustomPassword = await bcrypt.hash(customPassword, 10);
 
         // Update the database
-        await User.findByIdAndUpdate(userId, { password: hashedDefaultPassword });
+        await User.findByIdAndUpdate(userId, { password: hashedCustomPassword });
 
-        const message = "Password reset to 'password123'!";
+        const message = "User password successfully updated!";
         const allUsers = await admin.getAllUsers();
         
         res.render('auth/admin', { message, users: allUsers });
