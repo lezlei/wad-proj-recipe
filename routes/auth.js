@@ -16,5 +16,6 @@ router.get('/profile', auth.isLoggedIn, authController.getProfile);
 router.post('/profile/update', auth.isLoggedIn, authController.postUpdateProfile);
 router.post('/profile/delete', auth.isLoggedIn, authController.postDeleteProfile);
 router.get('/logout', auth.isLoggedIn, authController.getLogout);
+router.post('/profile/password', auth.isLoggedIn, authController.postChangePassword);
 
 module.exports = router;

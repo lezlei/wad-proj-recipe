@@ -1,6 +1,7 @@
 const admin = require('../models/admin')
 const User = require('../models/User')
 const Announcement = require('../models/Announcement');
+const bcrypt = require('bcrypt');
 
 exports.loadDashboard = async (req,res) => {
     try {
@@ -63,4 +64,24 @@ exports.deactivateBanner = async (req, res) => {
     const allUsers = await admin.getAllUsers()
 
     res.render('auth/admin',{message, users: allUsers});
+};
+
+exports.resetPassword = async (req, res) => {
+    try {
+        const userId = req.body.id;
+        
+        // Hash a simple default password
+        const hashedDefaultPassword = await bcrypt.hash("password123", 10);
+
+        // Update the database
+        await User.findByIdAndUpdate(userId, { password: hashedDefaultPassword });
+
+        const message = "Password reset to 'password123'!";
+        const allUsers = await admin.getAllUsers();
+        
+        res.render('auth/admin', { message, users: allUsers });
+    } catch (error) {
+        console.error(error);
+        res.redirect('/auth/admin');
+    }
 };

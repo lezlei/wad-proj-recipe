@@ -38,7 +38,7 @@ exports.postLogin = async (req, res) => {
 
         // Check if max attempts reached
         if (req.session.loginAttempts[username] >= 5) {
-            return res.render('auth/login', { error: "Maximum login attempts reached. Please reset your password by contacting admin at luochuan@gmail.com" });
+            return res.render('auth/login', { error: "Maximum login attempts reached. Please reset your password by contacting admin at luochuan@gmail.com from the email address associated with your account." });
         }
 
         // Check if user is suspended
@@ -59,7 +59,7 @@ exports.postLogin = async (req, res) => {
             req.session.loginAttempts[username] = (req.session.loginAttempts[username] || 0) + 1;
             
             if (req.session.loginAttempts[username] >= 5) {
-                return res.render('auth/login', { error: "Maximum login attempts reached. Please reset your password through email." });
+                return res.render('auth/login', { error: "Maximum login attempts reached. Please reset your password by contacting admin at luochuan@gmail.com from the email address associated with your account." });
             }
             
             // Re-render the page and inject the attempts left
@@ -114,4 +114,20 @@ exports.getLogout = (req, res) => {
         if (err) return res.send("Error logging out.");
         res.redirect('/'); 
     });
+};
+
+exports.postChangePassword = async (req, res) => {
+    try {
+        const { newPassword } = req.body;
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        
+        // Update the user's document in MongoDB
+        await User.findByIdAndUpdate(req.session.userId, { password: hashedPassword });
+
+        res.redirect('/auth/profile');
+    } catch (err) {
+        console.log(err);
+        res.send("Password update failed");
+    }
 };

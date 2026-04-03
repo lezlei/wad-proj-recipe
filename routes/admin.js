@@ -14,4 +14,6 @@ router.post('/announcement', adminController.postAnnouncement)
 
 router.post('/deactivate-banner', adminController.deactivateBanner)
 
+router.post('/reset-password', adminController.resetPassword);
+
 module.exports = router;
