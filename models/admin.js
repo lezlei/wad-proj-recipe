@@ -1,5 +1,5 @@
 const User = require('./User')
-const Review = require("../models/review");
+const Review = require("./review");
 
 exports.getAllUsers = async function () {
     return await User.find({})
