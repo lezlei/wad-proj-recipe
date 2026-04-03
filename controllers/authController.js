@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const Review = require('../models/review');
+const Recipe = require('../models/Recipe');
 
 exports.getRegister = (req, res) => {
     res.render('auth/register');
@@ -99,6 +100,7 @@ exports.postUpdateProfile = async (req, res) => {
 
 exports.postDeleteProfile = async (req, res) => {
     try {
+        await Recipe.deleteMany({ authorID: req.session.userId })
         await Review.deleteMany({ user: req.session.userId })
         await User.findByIdAndDelete(req.session.userId);
         req.session.destroy((err) => {
