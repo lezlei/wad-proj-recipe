@@ -100,7 +100,21 @@ exports.postUpdateProfile = async (req, res) => {
 
 exports.postDeleteProfile = async (req, res) => {
     try {
-        await Recipe.deleteMany({ authorID: req.session.userId })
+        const userReviews = await Review.find({ user: req.session.userId })
+        
+                for (const review of userReviews) {
+                    const recipe = await Recipe.findById(review.recipe)
+                    if (!recipe) continue
+        
+                    const currentCount = recipe.reviewCount || 1
+                    const currentAvg = recipe.avgScore || 0
+                    const newCount = Math.max(currentCount - 1, 0)
+                    const newAvg = newCount > 0
+                        ? (currentAvg * currentCount - review.rating) / newCount
+                        : 0
+        
+                    await Recipe.findByIdAndUpdate(review.recipe, { reviewCount: newCount, avgScore: newAvg })
+                }
         await Review.deleteMany({ user: req.session.userId })
         await User.findByIdAndDelete(req.session.userId);
         req.session.destroy((err) => {
