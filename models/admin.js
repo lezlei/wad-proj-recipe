@@ -57,6 +57,12 @@ exports.DeleteUser = async function (userId) {
 
             await Recipe.findByIdAndUpdate(review.recipe, { reviewCount: newCount, avgScore: newAvg })
         }
+
+        await Review.updateMany(
+            { "replies.user": userId },
+            { $pull: { replies: { user: userId } } }
+        )
+
         await Review.deleteMany({ user: userId })
         const result = await User.deleteOne({ _id: userId})
         return result.deletedCount > 0
