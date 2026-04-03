@@ -212,7 +212,7 @@ exports.updatePost = async (req,res)=>{
         
         if (updateCheck) {
             console.log(`${title} recipe updated for user ${currentUserID}`);
-            res.redirect("/recipes#all-recipes");
+            res.redirect("/recipes");
         } else {
             console.log(`${title} recipe does not exist!`);
             res.redirect("/recipes");
