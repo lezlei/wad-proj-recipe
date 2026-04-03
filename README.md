@@ -2,7 +2,9 @@
 - **Prerequisites** - Before running the project, ensure you have the following installed on your machine: Node.js 
 1. Open the Project in your Terminal - if using VS Code, open the folder in VS Code and use the integrated terminal
 2. Install Dependencies - run 'npm install' 
-3. Verify the Environment File - ensure config.env file is present in the main project folder, together with server.js
+3. Verify the Environment File - ensure config.env file is present in the main project folder, with 
+"DB=mongodb+srv://db_user:wadrecipe@wad-recipe-proj.xa42ecg.mongodb.net/WAD-recipe-proj?appName=WAD-recipe-proj
+SECRET=smu-is113-secret-key"
 4. Start the Server - run 'npm start' or 'node server.js'. You should see 'MongoDB connected successfully', 'Server running at http://localhost:3000/' in the terminal.
 5. Access the Website - Create an account and enjoy!
 
