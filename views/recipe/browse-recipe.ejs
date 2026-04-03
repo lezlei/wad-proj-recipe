@@ -413,7 +413,7 @@
       </tr>
     <% } else { %>
       <% allRecipes.forEach(recipe => { %>
-        <tr>
+        <tr id="recipe-<%= recipe._id %>">
 
           <td><%= recipe.title %></td>
 
@@ -456,7 +456,7 @@
             </form>
             <br><br>
             <% if (recipe.authorID && user && String(recipe.authorID._id) !== String(user._id) && !isFavourited) { %>
-              <form action="/recipes/<%= recipe._id %>/favourite?origin=all-recipes" method="POST" style="display:inline;">
+              <form action="/recipes/<%= recipe._id %>/favourite?origin=recipe-<%= recipe._id %>" method="POST" style="display:inline;">
                 <button type="submit">Add to Favourites</button>
               </form>
             <% } else if (isFavourited) { %>
