@@ -212,15 +212,15 @@ exports.updatePost = async (req,res)=>{
         
         if (updateCheck) {
             console.log(`${title} recipe updated for user ${currentUserID}`);
-            res.redirect("/recipes");
+            res.redirect("/recipes#all-recipes");
         } else {
             console.log(`${title} recipe does not exist!`);
-            res.redirect("/recipes");
+            res.redirect("/recipes#all-recipes");
         }
 
     } catch (error) {
         console.error(error);
-        res.redirect('/recipes');
+        res.redirect('/recipes#all-recipes');
     }
 }
 
@@ -246,11 +246,11 @@ exports.deletePost = async (req, res) => {
             console.log(`Recipe does not exist or unauthorized!`);
         }
         
-        res.redirect("/recipes");
+        res.redirect("/recipes#all-recipes");
 
     } catch (error) {
         console.error(error);
-        res.redirect('/recipes');
+        res.redirect('/recipes#all-recipes');
     }
 };
 
