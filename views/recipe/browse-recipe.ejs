@@ -455,7 +455,7 @@
               <button type="submit">View Reviews</button>
             </form>
             <br><br>
-            <% if (recipe.authorID && user && String(recipe.authorID._id) !== String(user._id) && !isFavourited) { %>
+            <% if (user && (!recipe.authorID || String(recipe.authorID._id) !== String(user._id)) && !isFavourited) { %>
               <form action="/recipes/<%= recipe._id %>/favourite?origin=recipe-<%= recipe._id %>" method="POST" style="display:inline;">
                 <button type="submit">Add to Favourites</button>
               </form>
