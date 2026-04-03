@@ -1,5 +1,6 @@
-const User = require('./User')
+const User = require('./User');
 const Review = require("./review");
+const Recipe = require("./Recipe");
 
 exports.getAllUsers = async function () {
     return await User.find({})
@@ -42,6 +43,7 @@ exports.DeleteUser = async function (userId) {
         }
 
         await Review.deleteMany({ user: userId })
+        await Recipe.deleteMany({ authorID: userId})
         const result = await User.deleteOne({ _id: userId})
         return result.deletedCount > 0
     } catch (error) {
