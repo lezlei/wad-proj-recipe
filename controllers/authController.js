@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const Review = require('../models/review');
 
 exports.getRegister = (req, res) => {
     res.render('auth/register');
@@ -98,6 +99,7 @@ exports.postUpdateProfile = async (req, res) => {
 
 exports.postDeleteProfile = async (req, res) => {
     try {
+        await Review.deleteMany({ user: req.session.userId })
         await User.findByIdAndDelete(req.session.userId);
         req.session.destroy((err) => {
             if (err) return res.send("Error logging out after deletion.");
