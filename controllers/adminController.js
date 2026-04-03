@@ -3,6 +3,7 @@ const User = require('../models/User')
 const Announcement = require('../models/Announcement');
 const bcrypt = require('bcrypt');
 
+
 exports.loadDashboard = async (req,res) => {
     try {
         const allUsers = await admin.getAllUsers()

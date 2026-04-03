@@ -1,4 +1,5 @@
 const User = require('./User')
+const Review = require("../models/review");
 
 exports.getAllUsers = async function () {
     return await User.find({})
@@ -40,8 +41,9 @@ exports.DeleteUser = async function (userId) {
             return false
         }
 
+        await Review.deleteMany({ user: userId })
         const result = await User.deleteOne({ _id: userId})
-        return result.modifiedCount > 0
+        return result.deletedCount > 0
     } catch (error) {
         console.error(error)
     }

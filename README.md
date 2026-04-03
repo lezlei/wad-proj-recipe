@@ -8,6 +8,10 @@ SECRET=smu-is113-secret-key
 4. Start the Server - run 'npm start' or 'node server.js'. You should see 'MongoDB connected successfully', 'Server running at http://localhost:3000/' in the terminal.
 5. Access the Website - Create an account and enjoy!
 
+## User Accounts and Password for Accessibility
+user : shar, shar@gmail.com, shar123
+admin: coen, coen@gmail.com, coen123
+
 ## Authentication & User Management
 
 Handles secure user onboarding, session tracking, and route protection across the entire application.
