@@ -71,9 +71,10 @@
                 </td>
                 
                 <td>
-                    <form action="/auth/reset-password" method="POST" onsubmit="return confirm('Reset this user\'s password to \'password123\'?');">
+                    <form action="/auth/reset-password" method="POST" onsubmit="return confirm('Are you sure you want to overwrite this user\'s password?');" style="margin: 0; display: flex; gap: 5px;">
                         <input type="hidden" name="id" value="<%= user._id %>">
-                        <button type="submit">Reset</button>
+                        <input type="text" name="newPassword" placeholder="Type new password" required style="width: 120px;">
+                        <button type="submit">Update</button>
                     </form>
                 </td>
             </tr>
