@@ -261,7 +261,7 @@ exports.deleteReply = async (req, res) => {
 
     await review.save();
 
-    res.redirect('/reviews?recipeId=' + review.recipe);
+    res.redirect('/reviews?recipeId=' + review.recipe + '&openReview=' + reviewId);
 
   } catch (error) {
     res.status(500).json({ error: error.message });

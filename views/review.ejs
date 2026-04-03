@@ -112,7 +112,7 @@
             <td colspan="2"></td>
           <% } %>
 
-          <!-- ✅ REPLIES BUTTON -->
+          <!-- REPLIES BUTTON -->
           <td>
             <button type="button" onclick="toggleReplies('<%= review._id %>')">
               Replies (<%= (review.replies || []).length %>)
@@ -120,7 +120,7 @@
           </td>
         </tr>
 
-        <!-- ✅ HIDDEN REPLIES ROW -->
+        <!-- HIDDEN REPLIES ROW -->
         <tr id="replies-<%= review._id %>" style="display:none;">
           <td colspan="7">
 
@@ -135,7 +135,7 @@
                   <small><%= new Date(reply.createdAt).toLocaleString() %></small>
                   <p><%= reply.comment %></p>
 
-                  <!-- ✅ DELETE REPLY BUTTON -->
+                  <!-- DELETE REPLY BUTTON -->
                   <% if (reply.user && (reply.user._id.toString() === String(userId) || role === "admin")) { %>
                     <form action="/reviews/reply/delete" method="POST" style="display:inline;">
                       <input type="hidden" name="reviewId" value="<%= review._id %>">
@@ -147,7 +147,7 @@
               <% }) %>
             <% } %>
 
-            <!-- ✅ REPLY FORM -->
+            <!-- REPLY FORM -->
             <% if (userId) { %>
               <form action="/reviews/reply" method="POST">
                 <input type="hidden" name="reviewId" value="<%= review._id %>">
@@ -166,17 +166,57 @@
   </tbody>
 </table>
 
-<!-- ✅ TOGGLE SCRIPT -->
+<!-- TOGGLE SCRIPT -->
 <script>
 function toggleReplies(id) {
   const row = document.getElementById("replies-" + id);
-  row.style.display = row.style.display === "none" ? "table-row" : "none";
+
+  let openReplies = JSON.parse(localStorage.getItem("openReplies")) || [];
+
+  if (row.style.display === "none") {
+    row.style.display = "table-row";
+
+    if (!openReplies.includes(id)) {
+      openReplies.push(id);
+    }
+  } else {
+    row.style.display = "none";
+
+    openReplies = openReplies.filter(r => r !== id);
+  }
+
+  localStorage.setItem("openReplies", JSON.stringify(openReplies));
 }
 
-<% if (openReview) { %>
+// Restore open replies + openReview + scroll position
 document.addEventListener("DOMContentLoaded", function() {
-  const row = document.getElementById("replies-<%= openReview %>");
-  if (row) row.style.display = "table-row";
+  let openReplies = JSON.parse(localStorage.getItem("openReplies")) || [];
+
+  <% if (openReview) { %>
+    openReplies.push("<%= openReview %>");
+  <% } %>
+
+  // remove duplicates
+  openReplies = [...new Set(openReplies)];
+
+  openReplies.forEach(id => {
+    const row = document.getElementById("replies-" + id);
+    if (row) row.style.display = "table-row";
+  });
+
+  localStorage.setItem("openReplies", JSON.stringify(openReplies));
+
+  // restore scroll position
+  const scrollY = localStorage.getItem("scrollPosition");
+  if (scrollY) {
+    window.scrollTo(0, parseInt(scrollY));
+  }
 });
-<% } %>
+
+// Save scroll position before any form submit
+document.querySelectorAll("form").forEach(form => {
+  form.addEventListener("submit", () => {
+    localStorage.setItem("scrollPosition", window.scrollY);
+  });
+});
 </script>
