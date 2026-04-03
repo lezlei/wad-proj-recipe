@@ -3,8 +3,8 @@
 1. Open the Project in your Terminal - if using VS Code, open the folder in VS Code and use the integrated terminal
 2. Install Dependencies - run 'npm install' 
 3. Verify the Environment File - ensure config.env file is present in the main project folder, with:
-1) DB=mongodb+srv://db_user:wadrecipe@wad-recipe-proj.xa42ecg.mongodb.net/WAD-recipe-proj?appName=WAD-recipe-proj
-2) SECRET=smu-is113-secret-key
+DB=mongodb+srv://db_user:wadrecipe@wad-recipe-proj.xa42ecg.mongodb.net/WAD-recipe-proj?appName=WAD-recipe-proj
+SECRET=smu-is113-secret-key
 4. Start the Server - run 'npm start' or 'node server.js'. You should see 'MongoDB connected successfully', 'Server running at http://localhost:3000/' in the terminal.
 5. Access the Website - Create an account and enjoy!
 
@@ -38,39 +38,32 @@ Handles secure user onboarding, session tracking, and route protection across th
 
 #########################################################################################################################################################
 
-## Reviews
+## Admin Panel
 
-Each recipe has a dedicated reviews page where users can share feedback and interact with other reviewers.
+The admin panel is a streamlined "Command Center" for admins, designed to handle user permissions and access along with the ability to issue announcements on the website.
 
 ### Features
 
-- **Submit a review** — Logged-in users can leave a star rating (1–5) and a comment on any recipe. Each user is limited to one review per recipe.
-- **Edit a review** — Users can update their own rating and comment. Admins can edit any review.
-- **Delete a review** — Users can delete their own review. Admins can delete any review, or delete all reviews for a recipe at once.
-- **Voting** — Users can upvote or downvote reviews. Clicking the same vote again toggles it off. Reviews are sorted by net vote score (upvotes minus downvotes).
-- **Replies (threaded comments)** — Users can reply to any review. Replies can be deleted by their author or an admin.
-- **Live average score** — The recipe's average rating and review count are automatically recalculated whenever a review is created, updated, or deleted.
+- **Update Users' Roles** - Admins are able to update the roles of all users from "User" to "Admin" and vice versa, granting a user the "Admin" role gives them permission to access the admin panel, as well as the ability to edit/delete any recipe.
+- **Ban User** -  Admins are able to toggle ban/unban users in the event it is appropriate to do so (e.g. The user has sent out malicious content onto the website).
+- **Delete User** - Admins are able to delete users in the event it is appropriate to do so.
+- **Announcement** - Admins are able to issue announcements that will appear on the website's recipe browser in the event the developers need to communicate information to all users. Admins are able to turn off the announcement banner if it is no longer needed.
 
 ### Routes
 
 | Method | Route | Description |
 |--------|-------|-------------|
-| GET | `/reviews?recipeId=` | View all reviews for a recipe |
-| POST | `/reviews` | Submit a new review |
-| GET | `/reviews/edit?reviewId=` | Load the edit review form |
-| POST | `/reviews/update` | Update an existing review |
-| POST | `/reviews/delete` | Delete a review |
-| POST | `/reviews/delete-all` | Delete all reviews for a recipe (admin only) |
-| POST | `/reviews/vote` | Upvote or downvote a review |
-| POST | `/reviews/reply` | Add a reply to a review |
-| POST | `/reviews/reply/delete` | Delete a reply |
+| GET | `auth/admin` | View the admin panel |
+| POST | `/auth/update-role` | Update Users' Roles |
+| POST | `/auth/toggle-suspend` | Toggle ban/unban a user |
+| POST | `/auth/delete` | Delete a user's account |
+| POST | `/auth/announcement` | Publish an announcement onto the recipe browser |
+| POST | `/auth/deactivate-banner` | Turn off/deactivate the announcement banner |
 
 ### Access Control
-
-- Viewing reviews is public.
-- Creating, editing, voting, and replying require login.
-- Users can only modify or delete their own reviews/replies.
-- Admins can modify or delete any review, reply, or all reviews for a recipe.
+- Only admins can view/access the admin panel
+- Only admins are able to execute the features in the admin panel
+- Users will not be able to see the button to access the admin panel
 
 #########################################################################################################################################################
 
@@ -130,38 +123,44 @@ The Recipe main page is separated into 5 different sections :
 | POST | `/recipes/:id/update` | Submit recipe update |
 | POST | `/recipes/:id/delete` | Delete a recipe |
 
-
 ### Access Control
 - Users can only edit or delete their own recipes
 - Admin can edit or delete everyone's recipes
 
 #########################################################################################################################################################
 
-## Admin Panel
+## Reviews
 
-The admin panel is a streamlined "Command Center" for admins, designed to handle user permissions and access along with the ability to issue announcements on the website.
+Each recipe has a dedicated reviews page where users can share feedback and interact with other reviewers.
 
 ### Features
 
-- **Update Users' Roles** - Admins are able to update the roles of all users from "User" to "Admin" and vice versa, granting a user the "Admin" role gives them permission to access the admin panel, as well as the ability to edit/delete any recipe.
-- **Ban User** -  Admins are able to toggle ban/unban users in the event it is appropriate to do so (e.g. The user has sent out malicious content onto the website).
-- **Delete User** - Admins are able to delete users in the event it is appropriate to do so.
-- **Announcement** - Admins are able to issue announcements that will appear on the website's recipe browser in the event the developers need to communicate information to all users. Admins are able to turn off the announcement banner if it is no longer needed.
+- **Submit a review** — Logged-in users can leave a star rating (1–5) and a comment on any recipe. Each user is limited to one review per recipe.
+- **Edit a review** — Users can update their own rating and comment. Admins can edit any review.
+- **Delete a review** — Users can delete their own review. Admins can delete any review, or delete all reviews for a recipe at once.
+- **Voting** — Users can upvote or downvote reviews. Clicking the same vote again toggles it off. Reviews are sorted by net vote score (upvotes minus downvotes).
+- **Replies (threaded comments)** — Users can reply to any review. Replies can be deleted by their author or an admin.
+- **Live average score** — The recipe's average rating and review count are automatically recalculated whenever a review is created, updated, or deleted.
 
 ### Routes
 
 | Method | Route | Description |
 |--------|-------|-------------|
-| GET | `auth/admin` | View the admin panel |
-| POST | `/auth/update-role` | Update Users' Roles |
-| POST | `/auth/toggle-suspend` | Toggle ban/unban a user |
-| POST | `/auth/delete` | Delete a user's account |
-| POST | `/auth/announcement` | Publish an announcement onto the recipe browser |
-| POST | `/auth/deactivate-banner` | Turn off/deactivate the announcement banner |
+| GET | `/reviews?recipeId=` | View all reviews for a recipe |
+| POST | `/reviews` | Submit a new review |
+| GET | `/reviews/edit?reviewId=` | Load the edit review form |
+| POST | `/reviews/update` | Update an existing review |
+| POST | `/reviews/delete` | Delete a review |
+| POST | `/reviews/delete-all` | Delete all reviews for a recipe (admin only) |
+| POST | `/reviews/vote` | Upvote or downvote a review |
+| POST | `/reviews/reply` | Add a reply to a review |
+| POST | `/reviews/reply/delete` | Delete a reply |
 
 ### Access Control
-- Only admins can view/access the admin panel
-- Only admins are able to execute the features in the admin panel
-- Users will not be able to see the button to access the admin panel
+
+- Viewing reviews is public.
+- Creating, editing, voting, and replying require login.
+- Users can only modify or delete their own reviews/replies.
+- Admins can modify or delete any review, reply, or all reviews for a recipe.
 
 #########################################################################################################################################################
