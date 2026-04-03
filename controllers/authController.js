@@ -115,6 +115,12 @@ exports.postDeleteProfile = async (req, res) => {
         
                     await Recipe.findByIdAndUpdate(review.recipe, { reviewCount: newCount, avgScore: newAvg })
                 }
+
+        await Review.updateMany(
+            { "replies.user": req.session.userId },
+            { $pull: { replies: { user: req.session.userId } } }
+        )
+
         await Review.deleteMany({ user: req.session.userId })
         await User.findByIdAndDelete(req.session.userId);
         req.session.destroy((err) => {
